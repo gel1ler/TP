@@ -5,14 +5,8 @@ public class Stable extends Building {
         super("Конюшня", 50);
     }
 
-//    @Override
-//    public void interact(Hero Hero) {
-//        if (Hero.getCastle().getUnits().isEmpty()) {
-//            System.out.println("Нанимаем героя...");
-//            Hero.getCastle().addHero(new Hero());
-//            Hero.setGold(Hero.getGold() - 50); // Стоимость найма героя
-//        } else {
-//            System.out.println("Невозможно нанять героя: в замке есть другие юниты.");
-//        }
-//    }
+    @Override
+    public void interact() {
+        System.out.println("Взаимодействие с " + this.getName());
+    }
 }

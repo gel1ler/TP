@@ -1,21 +1,10 @@
 package game.Castle.Buildings;
+import game.Utils.Menu.MenuItem;
 
-public abstract class Building {
-    private String name;
-    private int cost;
-
+public abstract class Building extends Buy {
     public Building(String name, int cost) {
-        this.name = name;
-        this.cost = cost;
+        super(name, cost);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-//    public abstract void interact(Player player);
+    public abstract void interact();
 }

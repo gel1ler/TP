@@ -18,6 +18,7 @@ public class Cell {
             case "road": return new Object[]{0, "🟫"}; // Дорога
             case "obstacle": return new Object[]{Integer.MAX_VALUE, "🚧"}; // Препятствие
             case "castle": return new Object[]{0, "🏰"}; // Замок
+            case "high_penalty_grass": return new Object[]{3, "🌾"}; // Нейтральная область с высоким штрафом
             default: return new Object[]{0, "❓"}; // Неизвестный тип
         }
     }

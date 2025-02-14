@@ -1,0 +1,24 @@
+package game.PLayer.Heroes;
+
+public class Barbarian extends Hero {
+    private int attackBonus;
+
+    public Barbarian() {
+        super("Варвар", 8);
+        this.attackBonus = 5;
+        increaseMovementRange(2);
+    }
+
+    public int getAttackBonus() {
+        return attackBonus;
+    }
+
+    public void increaseAttackBonus(int amount) {
+        attackBonus += amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Варвар (Дальность перемещения: " + getMovementRange() + ", Атака: " + attackBonus + ")";
+    }
+}

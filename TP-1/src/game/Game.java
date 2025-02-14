@@ -6,20 +6,15 @@ public class Game {
     private static Map gameMap;
     private static Player player;
     private static Player computer;
-    private static boolean isEnded=false;
+    private static boolean isEnded = false;
 
     public static void start() {
         initializeGame();
-        player.buyBuilding();
-        if (!player.getCastle().hasBuilding("Таверна") || !player.getCastle().hasBuilding("Хаб")){
+        player.getCastle().enter(); //Покупка и найм
+        if (!isGameOver()) {
             setGameEnd();
-        }
-        else {
-            gameMap = new Map(10, 10); // Инициализация карты
-
-            System.out.println("Покупка героев...");
-            System.out.println("Найм юнитов...");
-
+        } else {
+            gameMap = new Map(9, 9);
             gameMap.display();
 
 //        while (!isGameOver()) {
@@ -30,8 +25,8 @@ public class Game {
     }
 
     private static void initializeGame() {
-        player = new Player(0, 0, 85);
-        computer = new Player(9, 9, 85);
+        player = new Player(0, 0, 185);
+        computer = new Player(9, 9, 185);
     }
 
     private static void setGameEnd() {
@@ -40,9 +35,13 @@ public class Game {
     }
 
     private static boolean isGameOver() {
-        // Проверка условий завершения игры
-        return false;
+        return !player.hasTavern() || !player.hasHub() || !player.hasHeroes() || !player.hasUnits();
     }
+
+//    private static boolean isGameFinished(Player player, Player computer) {
+//        // Игра завершается, если один из замков захвачен
+//        return player.getCastle().isCaptured() || computer.getCastle().isCaptured();
+//    }
 
     private static void playerTurn() {
         System.out.println("Ход игрока");

@@ -5,8 +5,11 @@ import game.Castle.Buildings.Hub;
 import game.Castle.Buildings.Stable;
 import game.Castle.Buildings.Tavern;
 import game.Castle.Castle;
+import game.PLayer.Heroes.Hero;
 import game.PLayer.Units.Unit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Player {
@@ -14,10 +17,11 @@ public class Player {
     private int gold;
     private int x;
     private int y;
-    private Unit[] units;
+    private final List<Hero> heroes = new ArrayList<>();
+    private final List<Unit> units = new ArrayList<>();
 
     public Player(int x, int y, int initialGold) {
-        this.castle = new Castle();
+        this.castle = new Castle(this);
         this.x = x;
         this.y = y;
         this.gold = initialGold;
@@ -39,66 +43,70 @@ public class Player {
         this.gold += gold;
     }
 
-    private void build(Building building) {
-        if (gold >= building.getCost()) {
-            castle.addBuilding(building);
-            gold -= building.getCost();
-            System.out.println("Построено: " + building.getName());
+    public void minusGold(int gold) {
+        this.gold -= gold;
+    }
+
+    public void addHero(Hero hero){
+        this.heroes.add(hero);
+    }
+
+    public List<Hero> getHeroes() {
+        return heroes;
+    }
+
+    public void addUnit(Unit unit){
+        this.units.add(unit);
+    }
+
+    public List<Unit> getUnits() {
+        return units;
+    }
+
+    public boolean hasTavern() {
+        return this.castle.hasBuilding("Таверна");
+    }
+    public boolean hasHub() {
+        return this.castle.hasBuilding("Хаб");
+    }
+    public boolean hasHeroes() {
+        return !getHeroes().isEmpty();
+    }
+    public boolean hasUnits() {
+        return !getUnits().isEmpty();
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void move(int dx, int dy) {
+        this.x += dx;
+        this.y += dy;
+    }
+
+    public boolean hasCastle() {
+        return castle != null;
+    }
+
+    public void displayInfo() {
+        System.out.println("Игрок: (" + x + ", " + y + ")");
+        System.out.println("Золото: " + gold);
+        System.out.println("Герои: " + heroes.size());
+        System.out.println("Юниты: " + units.size());
+        if (hasCastle()) {
+            System.out.println("Замок: " + castle.getClass().getSimpleName());
         } else {
-            System.out.println("Недостаточно золота для постройки: " + building.getName());
-        }
-    }
-
-    private void displayBuyMenu() {
-        System.out.println("----------\nКоличество золота:" + gold);
-        System.out.println("\nВыберите здание для покупки:");
-        System.out.println("1 - Таверна - 50");
-        System.out.println("2 - Здание покупки юнитов (Хаб) - 25");
-        System.out.println("3 - Конюшня - 50");
-        System.out.println("Или введите 0 для выхода из меню покупки");
-    }
-
-    public void buyBuilding() {
-        Scanner in = new Scanner(System.in);
-        displayBuyMenu();
-        int selected = in.nextInt();
-        while (selected != 0) {
-            switch (selected) {
-                case 1:
-                    build(new Tavern());
-                    break;
-                case 2:
-                    build(new Hub());
-                    break;
-                case 3:
-                    build(new Stable());
-                    break;
-                default:
-                    System.out.println("Введено неправильное значение");
-                    break;
-            }
-            displayBuyMenu();
-            selected = in.nextInt();
-        }
-    }
-
-    public void buyHero() {
-        Scanner in = new Scanner(System.in);
-        displayBuyMenu();
-        int selected = in.nextInt();
-        while (selected != 0) {
-            switch (selected) {
-                case 1:
-                    build(new Tavern());
-                case 2:
-                    build(new Hub());
-                case 3:
-                    build(new Stable());
-                default:
-                    System.out.println("Введено неправильное значение");
-            }
-            displayBuyMenu();
-            selected = in.nextInt();
+            System.out.println("Замок: отсутствует");
         }
     }
 }

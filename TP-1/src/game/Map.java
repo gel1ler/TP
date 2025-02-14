@@ -24,10 +24,28 @@ public class Map {
         }
         //Castles
         cells[0][0] = new Cell("castle");
-        cells[n-1][m-1] = new Cell("castle");
+        cells[n - 1][m - 1] = new Cell("castle");
 
+        divideMap();
         createRoad();
-        createObstacles(10);
+//        createObstacles(20); // Не симметрично
+    }
+
+    private void divideMap() {
+        int playerRegionEnd = m / 3; // Левая треть карты - область игрока
+        int neutralRegionStart = playerRegionEnd;
+        int neutralRegionEnd = 2 * m / 3; // Центральная треть карты - нейтральная область
+        int computerRegionStart = neutralRegionEnd; // Правая треть карты - область компьютера
+
+        // Устанавливаем штрафы для нейтральной области
+        for (int n = 0; n < 9; n++) {
+            for (int i = Math.max(n - 2, 0); i < Math.min(n + 3, cells.length-1); i++) {
+                if (i >= 0 && i < cells.length && (i!=0 && n!=0)) {
+                    System.out.println(i);
+                    cells[n][i] = new Cell("high_penalty_grass");
+                }
+            }
+        }
     }
 
     private void createRoad() {
@@ -41,17 +59,25 @@ public class Map {
         }
     }
 
-    private void createObstacles(int count) {
-        for (int i = 0; i < count; i++) {
-            int x = random.nextInt(n);
-            int y = random.nextInt(m);
-
-            // Не ставим препятствия на дорогу или замки
-            if (!(Objects.equals(cells[x][y].getType(), "road"))) {
-                cells[x][y] = new Cell("obstacle");
-            }
-        }
-    }
+//    private void createObstacles() {
+//        int playerRegionEnd = m / 3;
+//        int neutralRegionStart = playerRegionEnd;
+//        int neutralRegionEnd = 2 * m / 3;
+//        int computerRegionStart = neutralRegionEnd;
+//
+//        // Препятствия между областями
+//        for (int i = 0; i < n; i++) {
+//            // Препятствия между областью игрока и нейтральной областью
+//            if (i % 2 == 0) {
+//                cells[i][playerRegionEnd] = new Cell("obstacle");
+//            }
+//
+//            // Препятствия между нейтральной областью и областью компьютера
+//            if (i % 2 != 0) {
+//                cells[i][neutralRegionEnd] = new Cell("obstacle");
+//            }
+//        }
+//    }
 
     public void display() {
         for (int i = 0; i < n; i++) {
