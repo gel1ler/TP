@@ -1,3 +1,5 @@
+package game;
+
 import java.util.Objects;
 import java.util.Random;
 
@@ -54,14 +56,9 @@ public class Map {
     public void display() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                System.out.print(cells[i][j] + "\t");
+                System.out.print(cells[i][j] + " ");
             }
             System.out.println();
         }
-    }
-
-    public static void main(String[] args) {
-        Map map = new Map(10, 10);
-        map.display();
     }
 }

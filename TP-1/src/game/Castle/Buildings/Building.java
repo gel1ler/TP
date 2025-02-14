@@ -1,3 +1,5 @@
+package game.Castle.Buildings;
+
 public abstract class Building {
     private String name;
     private int cost;
@@ -15,5 +17,5 @@ public abstract class Building {
         return cost;
     }
 
-    public abstract void interact(Player player);
+//    public abstract void interact(Player player);
 }

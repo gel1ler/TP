@@ -1,3 +1,5 @@
+package game;
+
 public class Cell {
     private String type;
     private int penalty;

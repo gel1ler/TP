@@ -1,7 +1,12 @@
+package game.Castle;
+
+import game.Castle.Buildings.Building;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-class Castle {
+public class Castle {
     private String owner;
     private List<Building> buildings = new ArrayList<>();
 //    private List<Unit> units = new ArrayList<>();
@@ -26,6 +31,10 @@ class Castle {
 //    public List<Hero> getHeroes() {
 //        return heroes;
 //    }
+
+    public boolean hasBuilding(String name){
+        return buildings.stream().anyMatch(i-> Objects.equals(i.getName(), name));
+    }
 
     public void displayBuildings() {
         System.out.println("Постройки в замке:");
