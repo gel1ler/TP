@@ -1,25 +1,21 @@
-package game.Castle.Buildings;
+package game.Castle;
 
-import game.PLayer.Player;
+import game.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shop {
+public class Shop<T extends Buy> {
     private final Player player;
-    private final List<Buy> availableItems;
+    private final List<T> availableItems;
 
-    public Shop(Player player, List<Buy> availableItems) {
+    public Shop(Player player, List<T> availableItems) {
         this.player = player;
         this.availableItems = new ArrayList<>(availableItems);
     }
 
-    public boolean canAfford(Buy item) {
-        return player.getGold() >= item.getCost();
-    }
-
-    public void buyItem(Buy item) {
-        if (canAfford(item)) {
+    public void buyItem(T item) {
+        if (player.canAfford(item)) {
             player.minusGold(item.getCost());
             System.out.println("Куплено: " + item.getName());
         } else {
@@ -29,15 +25,15 @@ public class Shop {
 
     public void showAvailableItems() {
         System.out.println("----------\nКоличество золота: " + player.getGold());
-        System.out.println("\nДоступные предметы:");
+        System.out.println("\nДоступные позиции:");
         for (int i = 0; i < availableItems.size(); i++) {
-            Buy item = availableItems.get(i);
-            System.out.println((i + 1) + " - " + item.getName() + " (" + item.getCost() + " золота)");
+            T item = availableItems.get(i);
+            System.out.print((i + 1) + " - " + item.getName() + " (" + item.getCost() + " золота) \t\t");
         }
         System.out.println("0 - Выйти");
     }
 
-    public List<Buy> getAvailableItems() {
+    public List<T> getAvailableItems() {
         return availableItems;
     }
 }

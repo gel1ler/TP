@@ -1,10 +1,10 @@
-package game.PLayer.Heroes;
+package game.Player.Heroes;
 
 public class Wizard extends Hero {
     private int magicPower; // Магическая сила
 
     public Wizard() {
-        super("Маг", 12);
+        super(0,0,"Маг", 12);
         this.magicPower = 10;
     }
 

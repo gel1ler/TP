@@ -1,48 +1,55 @@
 package game;
 
-import java.util.Objects;
+import game.Player.Player;
+
 import java.util.Random;
 
 public class Map {
     private int n, m;
-    private Cell[][] cells;
-    private Random random;
+    private Cell[][] terrain;
+    private Cell[][] objects;
+    private Cell[][] result;
+    private Player player;
+    private Player computer;
+//    private Random random;
 
-    public Map(int n, int m) {
+    public Map(int n, int m, Player player, Player computer) {
         this.n = n;
         this.m = m;
-        this.cells = new Cell[n][m];
-        this.random = new Random();
+        this.terrain = new Cell[n][m];
+        this.objects = new Cell[n][m];
+        this.player = player;
+        this.computer = computer;
+//        this.random = new Random();
         init();
     }
 
     private void init() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                cells[i][j] = new Cell("grass");
+                terrain[i][j] = new Cell("grass");
             }
         }
-        //Castles
-        cells[0][0] = new Cell("castle");
-        cells[n - 1][m - 1] = new Cell("castle");
-
         divideMap();
+
+        //Castles
+        terrain[0][0] = new Cell("castle");
+        terrain[n - 1][m - 1] = new Cell("castle");
         createRoad();
+        setHeroes();
+
 //        createObstacles(20); // Не симметрично
     }
 
     private void divideMap() {
-        int playerRegionEnd = m / 3; // Левая треть карты - область игрока
-        int neutralRegionStart = playerRegionEnd;
-        int neutralRegionEnd = 2 * m / 3; // Центральная треть карты - нейтральная область
-        int computerRegionStart = neutralRegionEnd; // Правая треть карты - область компьютера
-
-        // Устанавливаем штрафы для нейтральной области
-        for (int n = 0; n < 9; n++) {
-            for (int i = Math.max(n - 2, 0); i < Math.min(n + 3, cells.length-1); i++) {
-                if (i >= 0 && i < cells.length && (i!=0 && n!=0)) {
-                    System.out.println(i);
-                    cells[n][i] = new Cell("high_penalty_grass");
+        for (int i = 0; i < n; i++) {
+            for (int j = Math.max(i - 2, 0); j < Math.min(i + 3, m); j++) {
+                if (j >= 0 && j < n) {
+                    if ((i > (n / 2 - 1) && j > m / 2) || i > n / 2) {
+                        terrain[i][j] = new Cell("player_zone");
+                    } else {
+                        terrain[i][j] = new Cell("computer_zone");
+                    }
                 }
             }
         }
@@ -52,11 +59,17 @@ public class Map {
         int x = 1;
         int y = 1;
 
-        while (x != n - 1 || y != m - 1) {
-            cells[x][y] = new Cell("road");
-            if (x < n - 1) x++;
-            if (y < m - 1) y++;
+        while (x != m - 1 || y != n - 1) {
+            terrain[x][y] = new Cell("road");
+            if (x < m - 1) x++;
+            if (y < n - 1) y++;
         }
+    }
+
+    private void setHeroes() {
+        player.getHeroes().forEach(i -> {
+            objects[i.getX()][i.getY()] = new Cell("player_" + i.getName());
+        });
     }
 
 //    private void createObstacles() {
@@ -82,7 +95,12 @@ public class Map {
     public void display() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                System.out.print(cells[i][j] + " ");
+                if (objects[i][j]==null){
+                    System.out.print(terrain[i][j] + " ");
+                }
+                else{
+                    System.out.print(objects[i][j] + " ");
+                }
             }
             System.out.println();
         }

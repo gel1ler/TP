@@ -1,8 +1,8 @@
-package game.PLayer.Heroes;
+package game.Player.Heroes;
 
 public class Knight extends Hero {
     public Knight() {
-        super("Рыцарь", 10);
+        super(0,0,"Рыцарь", 10);
         increaseMovementRange(1);
     }
 

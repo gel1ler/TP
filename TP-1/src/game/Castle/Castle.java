@@ -1,7 +1,8 @@
 package game.Castle;
 
+import game.Castle.Buildings.BuildingBuy;
 import game.Castle.Buildings.*;
-import game.PLayer.Player;
+import game.Player.Player;
 import game.Utils.Menu.Menu;
 
 import java.util.ArrayList;
@@ -9,15 +10,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Castle extends Shop {
+public class Castle extends Shop<BuildingBuy> {
     private final List<Building> buildings = new ArrayList<>();
+    Player player;
 
     public Castle(Player player) {
         super(player, createAvailableBuildings(player));
+
+        //TEST
+        this.player = player;
+        buildings.add(new Tavern(player));
+        buildings.add(new Hub(player));
     }
 
-    private static List<Buy> createAvailableBuildings(Player player) {
-        List<Buy> availableBuildings = new ArrayList<>();
+    private static List<BuildingBuy> createAvailableBuildings(Player player) {
+        List<BuildingBuy> availableBuildings = new ArrayList<>();
         availableBuildings.add(new Tavern(player));
         availableBuildings.add(new Hub(player));
         availableBuildings.add(new Stable());
@@ -34,12 +41,11 @@ public class Castle extends Shop {
 
         int selected = in.nextInt();
         while (selected != 0) {
-            Buy item = getAvailableItems().get(selected - 1);
-            if (item instanceof Building && canAfford(item)) {
+            BuildingBuy item = getAvailableItems().get(selected - 1);
+            if (item instanceof Building && player.canAfford(item)) {
                 buyItem(item);
                 buildings.add((Building) item);
-            }
-            else {
+            } else {
                 System.out.println("Недостаточно золота для покупки: " + item.getName());
             }
             showAvailableItems();
@@ -58,9 +64,10 @@ public class Castle extends Shop {
                 try {
                     buildings.get(selected - 1).interact();
                 } catch (Exception e) {
-                    System.out.println("Неверное значение\n");
+                    System.err.println(e);
                 }
 
+                System.out.println("==Войти в здание==");
                 Menu.displayMenu(buildings, false);
                 selected = in.nextInt();
             }

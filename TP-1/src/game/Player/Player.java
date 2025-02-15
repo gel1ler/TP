@@ -1,18 +1,14 @@
-package game.PLayer;
+package game.Player;
 
-import game.Castle.Buildings.Building;
-import game.Castle.Buildings.Hub;
-import game.Castle.Buildings.Stable;
-import game.Castle.Buildings.Tavern;
+import game.Castle.Buy;
 import game.Castle.Castle;
-import game.PLayer.Heroes.Hero;
-import game.PLayer.Units.Unit;
+import game.Player.Heroes.Hero;
+import game.Player.Units.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-public class Player {
+public class Player extends Movable {
     private Castle castle;
     private int gold;
     private int x;
@@ -21,9 +17,8 @@ public class Player {
     private final List<Unit> units = new ArrayList<>();
 
     public Player(int x, int y, int initialGold) {
+        super(x, y);
         this.castle = new Castle(this);
-        this.x = x;
-        this.y = y;
         this.gold = initialGold;
     }
 
@@ -45,6 +40,10 @@ public class Player {
 
     public void minusGold(int gold) {
         this.gold -= gold;
+    }
+
+    public boolean canAfford(Buy item) {
+        return getGold() >= item.getCost();
     }
 
     public void addHero(Hero hero){
@@ -75,27 +74,17 @@ public class Player {
     public boolean hasUnits() {
         return !getUnits().isEmpty();
     }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public void move(int dx, int dy) {
-        this.x += dx;
-        this.y += dy;
-    }
-
     public boolean hasCastle() {
         return castle != null;
+    }
+
+    public void displayHeroes(){
+        System.out.println("Выберите Героя:");
+        for (int i = 0; i < heroes.size(); i++) {
+            System.out.print((i + 1) + " - ");
+            heroes.get(i).display();
+        }
+        System.out.println("0 - Выйти");
     }
 
     public void displayInfo() {

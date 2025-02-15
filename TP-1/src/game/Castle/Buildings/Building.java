@@ -1,7 +1,6 @@
 package game.Castle.Buildings;
-import game.Utils.Menu.MenuItem;
 
-public abstract class Building extends Buy {
+public abstract class Building extends BuildingBuy {
     public Building(String name, int cost) {
         super(name, cost);
     }

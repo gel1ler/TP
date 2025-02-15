@@ -1,4 +1,4 @@
-package game.Castle.Buildings;
+package game.Castle;
 
 public class Buy {
     private String name;
@@ -15,5 +15,4 @@ public class Buy {
     public int getCost() {
         return cost;
     }
-
 }

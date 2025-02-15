@@ -1,6 +1,9 @@
 package game;
 
-import game.PLayer.Player;
+import game.Player.Heroes.Barbarian;
+import game.Player.Heroes.Hero;
+import game.Player.Heroes.Wizard;
+import game.Player.Player;
 
 public class Game {
     private static Map gameMap;
@@ -14,7 +17,7 @@ public class Game {
         if (!isGameOver()) {
             setGameEnd();
         } else {
-            gameMap = new Map(9, 9);
+            gameMap = new Map(9, 9, player, computer);
             gameMap.display();
 
 //        while (!isGameOver()) {
@@ -27,6 +30,10 @@ public class Game {
     private static void initializeGame() {
         player = new Player(0, 0, 185);
         computer = new Player(9, 9, 185);
+
+        //TEST
+        player.addHero(new Barbarian());
+        player.addHero(new Wizard());
     }
 
     private static void setGameEnd() {
@@ -37,11 +44,6 @@ public class Game {
     private static boolean isGameOver() {
         return !player.hasTavern() || !player.hasHub() || !player.hasHeroes() || !player.hasUnits();
     }
-
-//    private static boolean isGameFinished(Player player, Player computer) {
-//        // Игра завершается, если один из замков захвачен
-//        return player.getCastle().isCaptured() || computer.getCastle().isCaptured();
-//    }
 
     private static void playerTurn() {
         System.out.println("Ход игрока");

@@ -1,10 +1,10 @@
-package game.PLayer.Heroes;
+package game.Player.Heroes;
 
 public class Barbarian extends Hero {
     private int attackBonus;
 
     public Barbarian() {
-        super("Варвар", 8);
+        super(0,0,"Варвар", 8);
         this.attackBonus = 5;
         increaseMovementRange(2);
     }

@@ -1,27 +1,29 @@
 package game.Castle.Buildings;
 
-import game.PLayer.Heroes.Barbarian;
-import game.PLayer.Heroes.Hero;
-import game.PLayer.Heroes.Knight;
-import game.PLayer.Heroes.Wizard;
-import game.PLayer.Player;
+import game.Castle.Shop;
+import game.Player.Heroes.Barbarian;
+import game.Player.Heroes.Hero;
+import game.Player.Heroes.Knight;
+import game.Player.Heroes.Wizard;
+import game.Castle.MovableBuy;
+import game.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Tavern extends Building {
-    private final Shop shop;
+    private final Shop<MovableBuy> shop;
     private final Player player;
 
     public Tavern(Player player) {
         super("Таверна", 50); // Вызов конструктора Building
-        this.shop = new Shop(player, createAvailableItems(player));
+        this.shop = new Shop<>(player, createAvailableItems(player));
         this.player = player;
     }
 
-    private List<Buy> createAvailableItems(Player player) {
-        List<Buy> availableHeroes = new ArrayList<>();
+    private List<MovableBuy> createAvailableItems(Player player) {
+        List<MovableBuy> availableHeroes = new ArrayList<>();
         availableHeroes.add(new Barbarian());
         availableHeroes.add(new Knight());
         availableHeroes.add(new Wizard());
@@ -34,8 +36,8 @@ public class Tavern extends Building {
 
         int selected = in.nextInt();
         while (selected != 0) {
-            Buy item = shop.getAvailableItems().get(selected - 1);
-            if (item instanceof Hero && shop.canAfford(item)) {
+            MovableBuy item = shop.getAvailableItems().get(selected - 1);
+            if (item instanceof Hero && player.canAfford(item)) {
                 shop.buyItem(item);
                 player.addHero((Hero) item);
             } else {

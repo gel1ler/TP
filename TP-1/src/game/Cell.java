@@ -18,13 +18,18 @@ public class Cell {
             case "road": return new Object[]{0, "🟫"}; // Дорога
             case "obstacle": return new Object[]{Integer.MAX_VALUE, "🚧"}; // Препятствие
             case "castle": return new Object[]{0, "🏰"}; // Замок
-            case "high_penalty_grass": return new Object[]{3, "🌾"}; // Нейтральная область с высоким штрафом
+            case "player_zone": return new Object[]{3, "\uD83D\uDD34"}; //Синий
+            case "computer_zone": return new Object[]{3, "\uD83D\uDD35"}; //Красный
             default: return new Object[]{0, "❓"}; // Неизвестный тип
         }
     }
 
     public String getType() {
         return type;
+    }
+
+    public boolean empty() {
+        return type.isEmpty();
     }
 
     public int getPenalty() {
