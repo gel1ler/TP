@@ -1,18 +1,17 @@
-package game.Player.Heroes;
+package game.Player.Entities;
 
-import game.Castle.MovableBuy;
-import game.Player.Units.Unit;
+import game.OwnerType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hero extends MovableBuy {
+public class Hero extends Entity {
     private int movementRange;
     private final List<Unit> units = new ArrayList<>();
 
-    public Hero(int x, int y, String name, int cost) {
-        super(x, y, name, cost);
-        this.movementRange = 2;
+    public Hero(HeroType heroType, OwnerType owner) {
+        super(heroType.getName(), heroType.getCost(), owner);
+        this.movementRange = heroType.getMovementRange();
     }
 
     public void increaseMovementRange(int amount) {
@@ -27,12 +26,15 @@ public class Hero extends MovableBuy {
         this.units.add(unit);
     }
 
+    public int getUnitsCount() {
+        return units.size();
+    }
+
     public void display() {
-        System.out.println(getName());
-        if(units.isEmpty()) {
+        System.out.println(getName() + "(" + getX() + ", " + getY() + ")");
+        if (units.isEmpty()) {
             System.out.println("\t-Без юнитов.");
-        }
-        else {
+        } else {
             units.forEach(i -> System.out.println("\t-" + i.getName()));
         }
     }

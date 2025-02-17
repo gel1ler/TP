@@ -1,6 +1,5 @@
 package game.Castle;
 
-import game.Castle.Buildings.BuildingBuy;
 import game.Castle.Buildings.*;
 import game.Player.Player;
 import game.Utils.Menu.Menu;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Castle extends Shop<BuildingBuy> {
+public class Castle extends Shop<Building> {
     private final List<Building> buildings = new ArrayList<>();
     Player player;
 
@@ -23,8 +22,8 @@ public class Castle extends Shop<BuildingBuy> {
         buildings.add(new Hub(player));
     }
 
-    private static List<BuildingBuy> createAvailableBuildings(Player player) {
-        List<BuildingBuy> availableBuildings = new ArrayList<>();
+    private static List<Building> createAvailableBuildings(Player player) {
+        List<Building> availableBuildings = new ArrayList<>();
         availableBuildings.add(new Tavern(player));
         availableBuildings.add(new Hub(player));
         availableBuildings.add(new Stable());
@@ -41,11 +40,12 @@ public class Castle extends Shop<BuildingBuy> {
 
         int selected = in.nextInt();
         while (selected != 0) {
-            BuildingBuy item = getAvailableItems().get(selected - 1);
-            if (item instanceof Building && player.canAfford(item)) {
+            Building item = getAvailableItems().get(selected - 1);
+            if (item != null && player.canAfford(item)) {
                 buyItem(item);
                 buildings.add((Building) item);
             } else {
+                assert item != null;
                 System.out.println("Недостаточно золота для покупки: " + item.getName());
             }
             showAvailableItems();

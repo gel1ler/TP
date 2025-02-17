@@ -2,24 +2,25 @@ package game.Player;
 
 import game.Castle.Buy;
 import game.Castle.Castle;
-import game.Player.Heroes.Hero;
-import game.Player.Units.Unit;
+import game.Player.Entities.Hero;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player extends Movable {
+public class Player {
+    private final String name;
     private Castle castle;
     private int gold;
-    private int x;
-    private int y;
     private final List<Hero> heroes = new ArrayList<>();
-    private final List<Unit> units = new ArrayList<>();
 
-    public Player(int x, int y, int initialGold) {
-        super(x, y);
+    public Player(int initialGold, String name) {
         this.castle = new Castle(this);
         this.gold = initialGold;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Castle getCastle() {
@@ -54,14 +55,6 @@ public class Player extends Movable {
         return heroes;
     }
 
-    public void addUnit(Unit unit){
-        this.units.add(unit);
-    }
-
-    public List<Unit> getUnits() {
-        return units;
-    }
-
     public boolean hasTavern() {
         return this.castle.hasBuilding("Таверна");
     }
@@ -70,9 +63,6 @@ public class Player extends Movable {
     }
     public boolean hasHeroes() {
         return !getHeroes().isEmpty();
-    }
-    public boolean hasUnits() {
-        return !getUnits().isEmpty();
     }
     public boolean hasCastle() {
         return castle != null;
@@ -87,11 +77,10 @@ public class Player extends Movable {
         System.out.println("0 - Выйти");
     }
 
-    public void displayInfo() {
-        System.out.println("Игрок: (" + x + ", " + y + ")");
+    public void showInfo() {
         System.out.println("Золото: " + gold);
         System.out.println("Герои: " + heroes.size());
-        System.out.println("Юниты: " + units.size());
+        displayHeroes();
         if (hasCastle()) {
             System.out.println("Замок: " + castle.getClass().getSimpleName());
         } else {

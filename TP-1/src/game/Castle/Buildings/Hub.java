@@ -1,32 +1,34 @@
 package game.Castle.Buildings;
 
 import game.Castle.Shop;
-import game.Castle.MovableBuy;
-import game.Player.Heroes.Hero;
+import game.OwnerType;
+import game.Player.Entities.Entity;
+import game.Player.Entities.Hero;
+import game.Player.Entities.UnitType;
 import game.Player.Player;
-import game.Player.Units.*;
+import game.Player.Entities.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Hub extends Building {
-    private final Shop<MovableBuy> shop;
-    private final Player player;
+    private final Shop<Entity> shop;
+    private final Player owner;
 
-    public Hub(Player player) {
-        super("Хаб", 25); // Вызов конструктора Building
-        this.shop = new Shop<>(player, createAvailableItems(player));
-        this.player = player;
+    public Hub(Player owner) {
+        super("Хаб", 25, owner.getName() == "computer" ? OwnerType.COMPUTER : OwnerType.PLAYER);
+        this.shop = new Shop<>(owner, createAvailableItems(owner));
+        this.owner = owner;
     }
 
-    private List<MovableBuy> createAvailableItems(Player player) {
-        List<MovableBuy> availableUnits = new ArrayList<>();
-        availableUnits.add(new Cavalryman());
-        availableUnits.add(new Crossbowman());
-        availableUnits.add(new Paladin());
-        availableUnits.add(new Spearman());
-        availableUnits.add(new Swordsman());
+    private List<Entity> createAvailableItems(Player player) {
+        List<Entity> availableUnits = new ArrayList<>();
+        availableUnits.add(new Unit(UnitType.CAVALRYMAN, null));
+        availableUnits.add(new Unit(UnitType.CROWSBOWMAN, null));
+        availableUnits.add(new Unit(UnitType.PALADIN, null));
+        availableUnits.add(new Unit(UnitType.SPEARMAN, null));
+        availableUnits.add(new Unit(UnitType.SWORDSMAN, null));
 
         return availableUnits;
     }
@@ -37,8 +39,8 @@ public class Hub extends Building {
         shop.showAvailableItems();
         int selected = in.nextInt();
         while (selected != 0) {
-            MovableBuy item = shop.getAvailableItems().get(selected - 1);
-            if (item instanceof Unit && player.canAfford(item)) {
+            Entity item = shop.getAvailableItems().get(selected - 1);
+            if (item instanceof Unit && owner.canAfford(item)) {
                 shop.buyItem(item);
                 hero.addUnit((Unit) item);
             } else {
@@ -48,17 +50,18 @@ public class Hub extends Building {
             selected = in.nextInt();
         }
     }
+
     @Override
     public void interact() {
         System.out.println("Вы вошли в Хаб.");
-        List<Hero> heroes = player.getHeroes();
+        List<Hero> heroes = owner.getHeroes();
         Scanner in = new Scanner(System.in);
-        player.displayHeroes();
+        owner.displayHeroes();
         int selected = in.nextInt();
 
-        while(selected!=0) {
+        while (selected != 0) {
             buyUnit(heroes.get(selected - 1));
-            player.displayHeroes();
+            owner.displayHeroes();
             selected = in.nextInt();
         }
     }

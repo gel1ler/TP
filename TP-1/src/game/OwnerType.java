@@ -1,0 +1,15 @@
+package game;
+
+public enum OwnerType {
+    PLAYER("player"),
+    COMPUTER("computer");
+    
+    private final String owner;
+    OwnerType(String owner) {
+        this.owner = owner;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+}

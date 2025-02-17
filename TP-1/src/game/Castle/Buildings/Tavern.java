@@ -1,11 +1,10 @@
 package game.Castle.Buildings;
 
 import game.Castle.Shop;
-import game.Player.Heroes.Barbarian;
-import game.Player.Heroes.Hero;
-import game.Player.Heroes.Knight;
-import game.Player.Heroes.Wizard;
-import game.Castle.MovableBuy;
+import game.OwnerType;
+import game.Player.Entities.Hero;
+import game.Player.Entities.Entity;
+import game.Player.Entities.HeroType;
 import game.Player.Player;
 
 import java.util.ArrayList;
@@ -13,20 +12,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Tavern extends Building {
-    private final Shop<MovableBuy> shop;
-    private final Player player;
+    private final Shop<Entity> shop;
+    private final Player owner;
 
-    public Tavern(Player player) {
-        super("Таверна", 50); // Вызов конструктора Building
-        this.shop = new Shop<>(player, createAvailableItems(player));
-        this.player = player;
+    public Tavern(Player owner) {
+        super("Таверна", 50, owner.getName() == "computer" ? OwnerType.COMPUTER : OwnerType.PLAYER); // Вызов конструктора Building
+        this.shop = new Shop<>(owner, createAvailableItems(owner));
+        this.owner = owner;
     }
 
-    private List<MovableBuy> createAvailableItems(Player player) {
-        List<MovableBuy> availableHeroes = new ArrayList<>();
-        availableHeroes.add(new Barbarian());
-        availableHeroes.add(new Knight());
-        availableHeroes.add(new Wizard());
+    private List<Entity> createAvailableItems(Player player) {
+        List<Entity> availableHeroes = new ArrayList<>();
+        availableHeroes.add(new Hero(HeroType.BARBARIAN, null));
+        availableHeroes.add(new Hero(HeroType.KNIGHT, null));
+        availableHeroes.add(new Hero(HeroType.WIZARD, null));
         return availableHeroes;
     }
 
@@ -36,10 +35,10 @@ public class Tavern extends Building {
 
         int selected = in.nextInt();
         while (selected != 0) {
-            MovableBuy item = shop.getAvailableItems().get(selected - 1);
-            if (item instanceof Hero && player.canAfford(item)) {
+            Entity item = shop.getAvailableItems().get(selected - 1);
+            if (item instanceof Hero && owner.canAfford(item)) {
                 shop.buyItem(item);
-                player.addHero((Hero) item);
+                owner.addHero((Hero) item);
             } else {
                 System.out.println("Недостаточно золота для покупки: " + item.getName());
             }
