@@ -11,7 +11,7 @@ public class Unit extends Entity {
     //Отряд
 
     public Unit(UnitType unitType, OwnerType owner) {
-        super(unitType.getName(), unitType.getCost(), owner);
+        super(unitType.getName(), unitType.getCost(), unitType.getMovementPoints(), owner);
         this.hp = unitType.getHp();
         this.damage = unitType.getDamage();
         this.fightDist = unitType.getFightDist();

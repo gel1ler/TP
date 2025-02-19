@@ -10,7 +10,7 @@ public class Hero extends Entity {
     private final List<Unit> units = new ArrayList<>();
 
     public Hero(HeroType heroType, OwnerType owner) {
-        super(heroType.getName(), heroType.getCost(), owner);
+            super(heroType.getName(), heroType.getCost(), heroType.getMovementPoints(), owner);
         this.movementRange = heroType.getMovementRange();
     }
 
@@ -37,5 +37,9 @@ public class Hero extends Entity {
         } else {
             units.forEach(i -> System.out.println("\t-" + i.getName()));
         }
+    }
+
+    public List<Unit> getUnits() {
+        return this.units;
     }
 }

@@ -1,6 +1,7 @@
 package game.Map;
 
 import game.OwnerType;
+import game.Player.Entities.Entity;
 import game.Player.Entities.Hero;
 import game.Player.Player;
 
@@ -10,12 +11,11 @@ import java.util.Objects;
 import java.util.Queue;
 
 public class Map {
-    private int n, m;
-    private Cell[][] terrain;
-    private Cell[][] objects;
-    private Cell[][] result;
-    private Player player;
-    private Player computer;
+    protected int n, m;
+    protected Cell[][] terrain;
+    protected Cell[][] objects;
+    protected Player player;
+    protected Player computer;
 //    private Random random;
 
     public Map(int n, int m, Player player, Player computer) {
@@ -29,24 +29,14 @@ public class Map {
         init();
     }
 
-    private void init() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                terrain[i][j] = new Cell(CellType.GRASS);
-            }
-        }
-        divideMap();
-
-        //Castles
-        terrain[0][0] = new Cell(CellType.PLAYER_CASTLE);
-        terrain[n - 1][m - 1] = new Cell(CellType.COMPUTER_CASTLE);
-        createRoad();
-        setHeroes(0, 0, player);
-        setHeroes(m - 1, m - 1, computer);
-//        createObstacles(20); // Не симметрично
+    public int getPenalty(int x, int y){
+        return terrain[x][y].getPenalty();
     }
 
-    private void divideMap() {
+
+     void init() {}
+
+    protected void divideMap() {
         for (int i = 0; i < n; i++) {
             for (int j = Math.max(i - 2, 0); j < Math.min(i + 3, m); j++) {
                 if (j >= 0 && j < n) {
@@ -60,7 +50,7 @@ public class Map {
         }
     }
 
-    private void createRoad() {
+    protected void createRoad() {
         int x = 1;
         int y = 1;
 
@@ -71,60 +61,7 @@ public class Map {
         }
     }
 
-    private void setHeroes(int startX, int startY, Player owner) {
-        List<Hero> heroes = owner.getHeroes();
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{startX, startY});
 
-        boolean[][] visited = new boolean[objects.length][objects[0].length];
-        visited[startX][startY] = true;
-        int placedHeroes = 0;
-        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
-        while (!queue.isEmpty() && placedHeroes < heroes.size()) {
-            int[] current = queue.poll();
-            int x = current[0];
-            int y = current[1];
-
-            // Пропускаем клетку (0, 0)
-            if (x == startX && y == startY) {
-                for (int[] dir : directions) {
-                    int newX = x + dir[0];
-                    int newY = y + dir[1];
-
-                    if (newX >= 0 && newX < objects.length && newY >= 0 && newY < objects[0].length && !visited[newX][newY]) {
-                        visited[newX][newY] = true;
-                        queue.add(new int[]{newX, newY});
-                    }
-                }
-                continue;
-            }
-
-            // Если клетка свободна, размещаем героя
-            if (objects[x][y] == null || objects[x][y].empty()) {
-                objects[x][y] = new Cell(Objects.equals(owner.getName(), "player") ? CellType.PLAYER_HERO : CellType.COMPUTER_HERO);
-                heroes.get(placedHeroes).setPos(x, y);
-                placedHeroes++;
-            }
-
-            // Добавляем соседние клетки в очередь
-            for (int[] dir : directions) {
-                int newX = x + dir[0];
-                int newY = y + dir[1];
-
-                // Проверяем, что новые координаты в пределах массива и клетка не посещена
-                if (newX >= 0 && newX < objects.length && newY >= 0 && newY < objects[0].length && !visited[newX][newY]) {
-                    visited[newX][newY] = true;
-                    queue.add(new int[]{newX, newY});
-                }
-            }
-        }
-
-        // Если героев больше, чем свободных клеток
-        if (placedHeroes < heroes.size()) {
-            System.out.println("Недостаточно свободных клеток для размещения всех героев!");
-        }
-    }
 
     public boolean isCellAvailable(int newX, int newY) {
         // Проверка выхода за границы карты
@@ -169,6 +106,7 @@ public class Map {
 //    }
 
     public void render() {
+//        System.out.println("\n\n\n\n\n\n\n\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (objects[i][j] == null) {
@@ -204,4 +142,8 @@ public class Map {
             return owner == OwnerType.COMPUTER ? cell.getType() == CellType.PLAYER_HERO : cell.getType() == CellType.COMPUTER_HERO;
         return false;
     }
+
+//    public Cell getObject(int[] enemyCoords) {
+//        return objects[enemyCoords[0]][enemyCoords[1]];
+//    }
 }

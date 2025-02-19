@@ -87,4 +87,11 @@ public class Player {
             System.out.println("Замок: отсутствует");
         }
     }
+
+    public Hero getEnemy(int[] enemyCoords) {
+        return heroes.stream()
+                .filter(i -> i.getX() == enemyCoords[0] && i.getY() == enemyCoords[1])
+                .findFirst()
+                .orElse(null);
+    }
 }
