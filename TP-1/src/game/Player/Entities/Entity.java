@@ -33,7 +33,7 @@ public class Entity extends Buy {
     }
 
     public int getY() {
-        return y;
+        return this.y;
     }
 
     public void setX(int x) {
@@ -44,10 +44,9 @@ public class Entity extends Buy {
         this.y = y;
     }
 
-    public void setPos(int x, int y) {
-        this.x = x;
+    public void setPos(int y, int x) {
         this.y = y;
-        //checkAction
+        this.x = x;
     }
 
     public int[] getPos() {

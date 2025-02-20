@@ -90,8 +90,12 @@ public class Player {
 
     public Hero getEnemy(int[] enemyCoords) {
         return heroes.stream()
-                .filter(i -> i.getX() == enemyCoords[0] && i.getY() == enemyCoords[1])
+                .filter(hero -> hero.getY() == enemyCoords[0] && hero.getX() == enemyCoords[1])
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void kill(Hero victim) {
+        this.heroes.removeIf(unit -> unit.getX() == victim.getX() && unit.getY() == victim.getY());
     }
 }

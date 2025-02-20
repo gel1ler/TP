@@ -20,7 +20,6 @@ public class BattleMap extends Map {
             throw new IllegalArgumentException("Hero objects cannot be null");
         }
         this.playerHero = playerHero;
-        System.out.println(this.playerHero.getUnits());
         this.compHero = compHero;
         setUnits(0, 0, playerHero);
         setUnits(m - 1, m - 1, compHero);
@@ -33,36 +32,36 @@ public class BattleMap extends Map {
 
         List<Unit> units = hero.getUnits();
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{startX, startY});
+        queue.add(new int[]{startY, startX});
 
         boolean[][] visited = new boolean[objects.length][objects[0].length];
-        visited[startX][startY] = true;
+        visited[startY][startX] = true;
         int placedUnits = 0;
         int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
         while (!queue.isEmpty() && placedUnits < units.size()) {
             int[] current = queue.poll();
-            int x = current[0];
-            int y = current[1];
+            int y = current[0];
+            int x = current[1];
 
             // Пропускаем клетку (0, 0)
             if (x == startX && y == startY) {
                 for (int[] dir : directions) {
-                    int newX = x + dir[0];
-                    int newY = y + dir[1];
+                    int newY = y + dir[0];
+                    int newX = x + dir[1];
 
-                    if (newX >= 0 && newX < objects.length && newY >= 0 && newY < objects[0].length && !visited[newX][newY]) {
-                        visited[newX][newY] = true;
-                        queue.add(new int[]{newX, newY});
+                    if (newX >= 0 && newX < objects.length && newY >= 0 && newY < objects[0].length && !visited[newY][newX]) {
+                        visited[newY][newX] = true;
+                        queue.add(new int[]{newY, newX});
                     }
                 }
                 continue;
             }
 
             // Если клетка свободна, размещаем героя
-            if (objects[x][y] == null || objects[x][y].empty()) {
-                objects[x][y] = new Cell(Objects.equals(hero.getOwner(), OwnerType.PLAYER) ? CellType.PLAYER_UNIT : CellType.COMPUTER_UNIT);
-                units.get(placedUnits).setPos(x, y);
+            if (objects[y][x] == null || objects[y][x].empty()) {
+                objects[y][x] = new Cell(Objects.equals(hero.getOwner(), OwnerType.PLAYER) ? CellType.PLAYER_UNIT : CellType.COMPUTER_UNIT);
+                units.get(placedUnits).setPos(y, x);
                 placedUnits++;
             }
 
@@ -99,5 +98,6 @@ public class BattleMap extends Map {
         terrain[n - 1][m - 1] = new Cell(CellType.COMPUTER_HERO);
         createRoad();
     }
+
 
 }

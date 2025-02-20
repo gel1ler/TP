@@ -3,7 +3,7 @@ package game.Player.Entities;
 public enum UnitType {
     SWORDSMAN("Мечник", 5, 80, 15, 1, 3, 1000),
     SPEARMAN("Копейщик", 5, 50, 10, 1, 2, 1000),
-    PALADIN("Паладин", 5, 100, 30, 1, 5, 1000),
+    PALADIN("Паладин", 5, 100, 60, 1, 5, 1000),
     CROWSBOWMAN("Арбалетчик", 5, 30, 20, 3, 2, 1000),
     CAVALRYMAN("Кавалерист", 5, 60, 25, 2, 4, 1000);
 

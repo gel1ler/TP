@@ -3,6 +3,7 @@ package game.Map;
 import game.OwnerType;
 import game.Player.Entities.Entity;
 import game.Player.Entities.Hero;
+import game.Player.Entities.Unit;
 import game.Player.Player;
 
 import java.util.LinkedList;
@@ -29,12 +30,13 @@ public class Map {
         init();
     }
 
-    public int getPenalty(int x, int y){
-        return terrain[x][y].getPenalty();
+    public int getPenalty(int y, int x) {
+        return terrain[y][x].getPenalty();
     }
 
 
-     void init() {}
+    void init() {
+    }
 
     protected void divideMap() {
         for (int i = 0; i < n; i++) {
@@ -51,33 +53,32 @@ public class Map {
     }
 
     protected void createRoad() {
-        int x = 1;
         int y = 1;
+        int x = 1;
 
-        while (x != m - 1 || y != n - 1) {
-            terrain[x][y] = new Cell(CellType.ROAD);
-            if (x < m - 1) x++;
+        while (y != n - 1 || x != m - 1) {
+            terrain[y][x] = new Cell(CellType.ROAD);
             if (y < n - 1) y++;
+            if (x < m - 1) x++;
         }
     }
 
 
-
-    public boolean isCellAvailable(int newX, int newY) {
+    public boolean isCellAvailable(int newY, int newX) {
         // Проверка выхода за границы карты
-        if (newX < 0 || newX >= m || newY < 0 || newY >= n) {
+        if (newY < 0 || newY >= n || newX < 0 || newX >= m) {
             System.out.println("Невозможно переместиться за пределы карты.");
             return false;
         }
 
         // Проверка на препятствия
-        if (terrain[newX][newY].getType().equals("obstacle")) {
-            System.out.println("Невозможно переместиться на препятствие.");
-            return false;
-        }
+//        if (terrain[newY][newX].getType().equals("obstacle")) {
+//            System.out.println("Невозможно переместиться на препятствие.");
+//            return false;
+//        }
 
         // Проверка на занятость клетки другим юнитом
-        if (objects[newX][newY] != null) {
+        if (objects[newY][newX] != null) {
             System.out.println("Клетка занята другим юнитом.");
             return false;
         }
@@ -124,26 +125,23 @@ public class Map {
         objects[oldCords[0]][oldCords[1]] = null;
     }
 
-    public int getWidth() {
-        return m;
-    }
-
-    public int getHeight() {
-        return n;
-    }
-
-    public boolean isEnemyCastle(int x, int y, OwnerType owner) {
+    public boolean isEnemyCastle(int y, int x, OwnerType owner) {
         return owner.equals(OwnerType.COMPUTER) ? (x == 0 && y == 0) : (x == m - 1 && y == n - 1);
     }
 
-    public boolean isEnemy(int x, int y, OwnerType owner) {
+    public boolean isEnemy(int y, int x, OwnerType owner) {
         Cell cell = objects[y][x];
-        if (cell != null)
-            return owner == OwnerType.COMPUTER ? cell.getType() == CellType.PLAYER_HERO : cell.getType() == CellType.COMPUTER_HERO;
+        if (cell != null) {
+            if (owner == OwnerType.COMPUTER) {
+                return cell.getType() == CellType.PLAYER_HERO || cell.getType() == CellType.PLAYER_UNIT;
+            } else {
+                return cell.getType() == CellType.COMPUTER_HERO || cell.getType() == CellType.COMPUTER_UNIT;
+            }
+        }
         return false;
     }
 
-//    public Cell getObject(int[] enemyCoords) {
-//        return objects[enemyCoords[0]][enemyCoords[1]];
-//    }
+    public void kill(int y, int x) {
+        this.objects[y][x] = null;
+    }
 }
