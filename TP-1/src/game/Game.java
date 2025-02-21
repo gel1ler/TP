@@ -90,8 +90,8 @@ public abstract class Game {
             double cost = map.getPenalty(newY, newX);
             cost *= isDiagonal ? Math.sqrt(2) : 1;
             if (entity.isEnoughMP((int) cost)) {
-                entity.minusMP((int) cost);
-                map.moveObject(new int[]{entity.getY(), entity.getX()}, new int[]{newY, newX});
+//                entity.minusMP((int) cost);
+                map.moveObject(new int[]{entity.getY(), entity.getX()}, new int[]{newY, newX}, entity.getOwner());
                 entity.setPos(newY, newX);
 
                 //Конец попыток

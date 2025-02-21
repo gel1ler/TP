@@ -86,7 +86,7 @@ public class MainGame extends Game {
         }
 
         System.out.println("Выберите действие:");
-        System.out.print("1 - Переместить Героя\t\t2 - Пропустить ход\t\t" + helperText + "0 - Выбрать другого Героя");
+        System.out.print("1 - Переместить Героя\t\t2 - Пропустить ход\t\t" + helperText + "0 - Выбрать другого Героя\t\t10 - войти в замок\n");
 
         int action = scanner.nextInt();
 
@@ -112,6 +112,12 @@ public class MainGame extends Game {
             case 0:
                 selectedHero = null;
                 return;
+            case 10:
+                player.getCastle().enter();
+                gameMap.updateHeroes();
+                playerTurn();
+                break;
+
             default:
                 System.out.println("Неверный выбор.");
                 break;

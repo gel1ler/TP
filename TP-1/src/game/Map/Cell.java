@@ -6,7 +6,7 @@ public class Cell {
     private String icon;
 
     public Cell(CellType type) {
-        if (type == CellType.GRASS && Math.random() >= 0.66)
+        if (type == CellType.GRASS && Math.random() >= 0.2)
             this.type = CellType.GOLD;
         else
             this.type = type;
@@ -31,12 +31,16 @@ public class Cell {
         return penalty;
     }
 
-    public String getIcon() {
-        return icon;
-    }
-
     @Override
     public String toString() {
         return icon;
+    }
+
+    public void setType(CellType type) {
+        this.type = type;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

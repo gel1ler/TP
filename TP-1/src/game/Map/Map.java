@@ -120,9 +120,20 @@ public class Map {
         }
     }
 
-    public void moveObject(int[] oldCords, int[] newCords) {
+    public void moveObject(int[] oldCords, int[] newCords, OwnerType owner) {
         objects[newCords[0]][newCords[1]] = objects[oldCords[0]][oldCords[1]];
         objects[oldCords[0]][oldCords[1]] = null;
+
+        if (terrain[newCords[0]][newCords[1]].getType() == CellType.GOLD){
+            terrain[newCords[0]][newCords[1]].setType(CellType.GRASS);
+            terrain[newCords[0]][newCords[1]].setIcon(CellType.GRASS.getIcon());
+            System.out.println(owner + " получил 100 золота");
+            if (owner == OwnerType.PLAYER) {
+                player.plusGold(100);
+            } else {
+                computer.plusGold(100);
+            }
+        }
     }
 
     public boolean isEnemyCastle(int y, int x, OwnerType owner) {

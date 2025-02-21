@@ -1,12 +1,10 @@
 package game.Map;
 
+import game.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Player;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.*;
 
 public class MainMap extends Map {
     //Place gold
@@ -86,9 +84,11 @@ public class MainMap extends Map {
         setHeroes(0, 0, player);
         setHeroes(n - 1, m - 1, computer);
 
-        //place gold
-
-
 //        createObstacles(20); // Не симметрично
+    }
+
+    public void updateHeroes() {
+        System.out.println(Arrays.deepToString(objects));
+        player.getHeroes(); //координаты исходных ребят == 0
     }
 }

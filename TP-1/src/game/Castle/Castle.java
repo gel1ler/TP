@@ -79,7 +79,7 @@ public class Castle extends Shop<Building> {
     public void enter() {
         System.out.println("\nВы в замке.");
         Scanner in = new Scanner(System.in);
-        String[] mainMenu = {"Купить здание", "Войти в здание"};
+        String[] mainMenu = {"Купить здание", "Войти в здание\n"};
         Menu.displayMenu(mainMenu);
 
         int selected = in.nextInt();
