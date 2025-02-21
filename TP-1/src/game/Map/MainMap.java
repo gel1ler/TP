@@ -9,9 +9,10 @@ import java.util.Objects;
 import java.util.Queue;
 
 public class MainMap extends Map {
+    //Place gold
+
     public MainMap(int n, int m, Player player, Player computer) {
         super(n, m, player, computer);
-
     }
 
     private void setHeroes(int startY, int startX, Player owner) {
@@ -70,7 +71,7 @@ public class MainMap extends Map {
     }
 
     @Override
-    protected void init(){
+    protected void init() {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 terrain[i][j] = new Cell(CellType.GRASS);
@@ -82,8 +83,11 @@ public class MainMap extends Map {
         terrain[0][0] = new Cell(CellType.PLAYER_CASTLE);
         terrain[n - 1][m - 1] = new Cell(CellType.COMPUTER_CASTLE);
         createRoad();
-            setHeroes(0, 0, player);
-            setHeroes(n - 1, m - 1, computer);
+        setHeroes(0, 0, player);
+        setHeroes(n - 1, m - 1, computer);
+
+        //place gold
+
 
 //        createObstacles(20); // Не симметрично
     }

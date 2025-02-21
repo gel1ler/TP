@@ -76,7 +76,6 @@ public class MainGame extends Game {
 
         int[] enemyCoords = nearby.get("enemy");
         int[] castleCoords = nearby.get("castle");
-        System.out.println(Arrays.toString(enemyCoords));
 
         if (enemyCoords != null) {
             canAtack = true;

@@ -6,15 +6,19 @@ public class Cell {
     private String icon;
 
     public Cell(CellType type) {
-        this.type = type;
-        this.penalty = type.getPenalty();
-        this.icon = type.getIcon();
+        if (type == CellType.GRASS && Math.random() >= 0.66)
+            this.type = CellType.GOLD;
+        else
+            this.type = type;
+
+        this.penalty = this.type.getPenalty();
+        this.icon = this.type.getIcon();
     }
 
     public CellType getType() {
         try {
             return type;
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return null;
         }
     }

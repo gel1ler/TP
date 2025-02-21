@@ -9,10 +9,11 @@ public enum CellType {
     PLAYER_ZONE(100, "\uD83D\uDD34"), // синий
     COMPUTER_ZONE(100, "\uD83D\uDD35"),
     PLAYER_HERO(0, "\uD83E\uDDB8"),
-    PLAYER_UNIT(0, "\uD83E\uDD77"),
+    PLAYER_UNIT(0, "\uD83E\uDD20"),
     COMPUTER_HERO(0, "\uD83E\uDDB9"),
-    COMPUTER_UNIT(0, "\uD83D\uDD74"),
-    FOG(150, "\uD83C\uDF2B️");
+    COMPUTER_UNIT(0, "\uD83D\uDE08"),
+    FOG(150, "\uD83C\uDF2B"),
+    GOLD(150, "🪙");
 
     private final int penalty;
     private final String icon;

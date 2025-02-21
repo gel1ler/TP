@@ -64,13 +64,15 @@ public class Battle extends Game {
 
     private void playerTurn() {
         boolean canAtack = false, canInvade = false;
-        if (selectedUnit == null) {
+
+        //Пока не будет сделан выбор юнита
+        while (selectedUnit == null) {
             selectedUnit = selectUnit();
         }
-        int x = selectedUnit.getX();
         int y = selectedUnit.getY();
+        int x = selectedUnit.getX();
 
-        HashMap<String, int[]> nearby = checkEnemies(x, y, battleMap, OwnerType.PLAYER);
+        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.PLAYER);
         String helperText = "";
 
         int[] enemyCoords = nearby.get("enemy");

@@ -31,7 +31,6 @@ public abstract class Game {
 
                 if (map.isEnemyCastle(i, j, owner))
                     nearby.put("castle", new int[]{i, j});
-
                 if (map.isEnemy(i, j, owner)) {
                     nearby.put("enemy", new int[]{i, j});
                 }
@@ -87,7 +86,7 @@ public abstract class Game {
                 System.out.println("Неверное направление.");
         }
 
-        if(map.isCellAvailable(newY, newX)) {
+        if (map.isCellAvailable(newY, newX)) {
             double cost = map.getPenalty(newY, newX);
             cost *= isDiagonal ? Math.sqrt(2) : 1;
             if (entity.isEnoughMP((int) cost)) {
@@ -105,24 +104,24 @@ public abstract class Game {
         return true;
     }
 
-    protected Entity selectEntity(List<Entity> entities, String name) {
-        if (entities.isEmpty()) {
-            return null;
-        }
-
-        System.out.println("Сделайте выбор:");
-        for (int i = 0; i < entities.size(); i++) {
-            System.out.println((i + 1) + " - " + name + " на (" + entities.get(i).getX() + ", " + entities.get(i).getY() + ")");
-        }
-
-        int selected = scanner.nextInt() - 1;
-        if (selected >= 0 && selected < entities.size()) {
-            return entities.get(selected);
-        } else {
-            System.out.println("Неверный выбор.");
-            return null;
-        }
-    }
+//    protected Entity selectEntity(List<Entity> entities, String name) {
+//        if (entities.isEmpty()) {
+//            return null;
+//        }
+//
+//        System.out.println("Сделайте выбор:");
+//        for (int i = 0; i < entities.size(); i++) {
+//            System.out.println((i + 1) + " - " + name + " на (" + entities.get(i).getX() + ", " + entities.get(i).getY() + ")");
+//        }
+//
+//        int selected = scanner.nextInt() - 1;
+//        if (selected >= 0 && selected < entities.size()) {
+//            return entities.get(selected);
+//        } else {
+//            System.out.println("Неверный выбор.");
+//            return null;
+//        }
+//    }
 
     public abstract void start();
 }
