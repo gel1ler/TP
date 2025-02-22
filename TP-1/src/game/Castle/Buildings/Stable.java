@@ -4,7 +4,7 @@ import game.OwnerType;
 
 public class Stable extends Building {
     public Stable() {
-        super("Конюшня", 50, OwnerType.PLAYER);
+        super("Конюшня", 50, OwnerType.PERSON);
     }
 
     @Override

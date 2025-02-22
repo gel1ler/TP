@@ -1,6 +1,7 @@
 package game.Castle;
 
 import game.Castle.Buildings.*;
+import game.Player.Entities.Hero;
 import game.Player.Player;
 import game.Utils.Menu.Menu;
 
@@ -11,7 +12,9 @@ import java.util.Scanner;
 
 public class Castle extends Shop<Building> {
     private final List<Building> buildings = new ArrayList<>();
-    Player player;
+    private Player player;
+    private Hero invader;
+
 
     public Castle(Player player) {
         super(player, createAvailableBuildings(player));
@@ -79,7 +82,7 @@ public class Castle extends Shop<Building> {
     public void enter() {
         System.out.println("\nВы в замке.");
         Scanner in = new Scanner(System.in);
-        String[] mainMenu = {"Купить здание", "Войти в здание\n"};
+        String[] mainMenu = {"Купить здание", "Войти в здание"};
         Menu.displayMenu(mainMenu);
 
         int selected = in.nextInt();
@@ -95,5 +98,10 @@ public class Castle extends Shop<Building> {
             Menu.displayMenu(mainMenu);
             selected = in.nextInt();
         }
+    }
+
+    public void invasion(Hero invader) {
+        System.out.println("Продержитесь в замке 2 хода и вы выиграете игру!");
+        this.invader = invader;
     }
 }

@@ -2,6 +2,8 @@ package game.Player;
 
 import game.Castle.Buy;
 import game.Castle.Castle;
+import game.Map.CellType;
+import game.OwnerType;
 import game.Player.Entities.Hero;
 
 import java.util.ArrayList;
@@ -12,11 +14,13 @@ public class Player {
     private Castle castle;
     private int gold;
     private final List<Hero> heroes = new ArrayList<>();
+    private OwnerType ownerType;
 
-    public Player(int initialGold, String name) {
+    public Player(int initialGold, OwnerType ownerType) {
         this.castle = new Castle(this);
         this.gold = initialGold;
-        this.name = name;
+        this.ownerType = ownerType;
+        this.name = ownerType.getOwner();
     }
 
     public String getName() {
@@ -47,7 +51,7 @@ public class Player {
         return getGold() >= item.getCost();
     }
 
-    public void addHero(Hero hero){
+    public void addHero(Hero hero) {
         this.heroes.add(hero);
     }
 
@@ -58,17 +62,20 @@ public class Player {
     public boolean hasTavern() {
         return this.castle.hasBuilding("Таверна");
     }
+
     public boolean hasHub() {
         return this.castle.hasBuilding("Хаб");
     }
+
     public boolean hasHeroes() {
         return !getHeroes().isEmpty();
     }
+
     public boolean hasCastle() {
         return castle != null;
     }
 
-    public void displayHeroes(){
+    public void displayHeroes() {
         System.out.println("Выберите Героя:");
         for (int i = 0; i < heroes.size(); i++) {
             System.out.print((i + 1) + " - ");
@@ -88,14 +95,30 @@ public class Player {
         }
     }
 
-    public Hero getEnemy(int[] enemyCoords) {
+    public Hero getHeroByCords(int[] enemyCords) {
         return heroes.stream()
-                .filter(hero -> hero.getY() == enemyCoords[0] && hero.getX() == enemyCoords[1])
+                .filter(hero -> hero.getY() == enemyCords[0] && hero.getX() == enemyCords[1])
                 .findFirst()
                 .orElse(null);
     }
 
     public void kill(Hero victim) {
         this.heroes.removeIf(unit -> unit.getX() == victim.getX() && unit.getY() == victim.getY());
+    }
+
+    public OwnerType getOwnerType() {
+        return ownerType;
+    }
+
+    public CellType getCellType() {
+        if (this.ownerType == OwnerType.PERSON) {
+            return CellType.PERSON_HERO;
+        } else {
+            return CellType.COMPUTER_HERO;
+        }
+    }
+
+    public void buyRandom() {
+
     }
 }

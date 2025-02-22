@@ -6,7 +6,7 @@ public class Cell {
     private String icon;
 
     public Cell(CellType type) {
-        if (type == CellType.GRASS && Math.random() >= 0.2)
+        if (type == CellType.GRASS && Math.random() >= 0.66)
             this.type = CellType.GOLD;
         else
             this.type = type;

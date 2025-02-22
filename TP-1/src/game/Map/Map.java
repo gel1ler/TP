@@ -15,25 +15,22 @@ public class Map {
     protected int n, m;
     protected Cell[][] terrain;
     protected Cell[][] objects;
-    protected Player player;
+    protected Player person;
     protected Player computer;
-//    private Random random;
 
-    public Map(int n, int m, Player player, Player computer) {
+    public Map(int n, int m, Player person, Player computer) {
         this.n = n;
         this.m = m;
         this.terrain = new Cell[n][m];
         this.objects = new Cell[n][m];
-        this.player = player;
+        this.person = person;
         this.computer = computer;
-//        this.random = new Random();
         init();
     }
 
     public int getPenalty(int y, int x) {
         return terrain[y][x].getPenalty();
     }
-
 
     void init() {
     }
@@ -43,7 +40,7 @@ public class Map {
             for (int j = Math.max(i - 2, 0); j < Math.min(i + 3, m); j++) {
                 if (j >= 0 && j < n) {
                     if ((i > (n / 2 - 1) && j > m / 2) || i > n / 2) {
-                        terrain[i][j] = new Cell(CellType.PLAYER_ZONE);
+                        terrain[i][j] = new Cell(CellType.PERSON_ZONE);
                     } else {
                         terrain[i][j] = new Cell(CellType.COMPUTER_ZONE);
                     }
@@ -63,11 +60,10 @@ public class Map {
         }
     }
 
-
-    public boolean isCellAvailable(int newY, int newX) {
+    public boolean isCellAvailable(int newY, int newX, boolean errorDisplay) {
         // Проверка выхода за границы карты
         if (newY < 0 || newY >= n || newX < 0 || newX >= m) {
-            System.out.println("Невозможно переместиться за пределы карты.");
+            if (errorDisplay) System.out.println("Невозможно переместиться за пределы карты.");
             return false;
         }
 
@@ -77,13 +73,54 @@ public class Map {
 //            return false;
 //        }
 
+        if (terrain[newY][newX].getType().equals(CellType.PERSON_CASTLE) || terrain[newY][newX].getType().equals(CellType.COMPUTER_CASTLE)) {
+            if (errorDisplay) System.out.println("Клетка занята замком.");
+            return false;
+        }
+
         // Проверка на занятость клетки другим юнитом
         if (objects[newY][newX] != null) {
-            System.out.println("Клетка занята другим юнитом.");
+            if (errorDisplay) System.out.println("Клетка занята другим юнитом.");
             return false;
         }
 
         return true;
+    }
+
+    public boolean isEnemyCastle(int y, int x, OwnerType owner) {
+        return owner.equals(OwnerType.COMPUTER) ? (x == 0 && y == 0) : (x == m - 1 && y == n - 1);
+    }
+
+    public boolean isEnemy(int y, int x, OwnerType owner) {
+        Cell cell = objects[y][x];
+        if (cell != null) {
+            if (owner == OwnerType.COMPUTER) {
+                return cell.getType() == CellType.PERSON_HERO || cell.getType() == CellType.PERSON_UNIT;
+            } else {
+                return cell.getType() == CellType.COMPUTER_HERO || cell.getType() == CellType.COMPUTER_UNIT;
+            }
+        }
+        return false;
+    }
+
+    public void moveObject(int[] oldCords, int[] newCords, OwnerType owner) {
+        objects[newCords[0]][newCords[1]] = objects[oldCords[0]][oldCords[1]];
+        objects[oldCords[0]][oldCords[1]] = null;
+
+        if (terrain[newCords[0]][newCords[1]].getType() == CellType.GOLD) {
+            terrain[newCords[0]][newCords[1]].setType(CellType.GRASS);
+            terrain[newCords[0]][newCords[1]].setIcon(CellType.GRASS.getIcon());
+            System.out.println(owner + " получил 100 золота");
+            if (owner == OwnerType.PERSON) {
+                person.plusGold(100);
+            } else {
+                computer.plusGold(100);
+            }
+        }
+    }
+
+    public void kill(int y, int x) {
+        this.objects[y][x] = null;
     }
 
 //    private void createObstacles() {
@@ -107,7 +144,6 @@ public class Map {
 //    }
 
     public void render() {
-//        System.out.println("\n\n\n\n\n\n\n\n");
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (objects[i][j] == null) {
@@ -118,41 +154,6 @@ public class Map {
             }
             System.out.println();
         }
-    }
-
-    public void moveObject(int[] oldCords, int[] newCords, OwnerType owner) {
-        objects[newCords[0]][newCords[1]] = objects[oldCords[0]][oldCords[1]];
-        objects[oldCords[0]][oldCords[1]] = null;
-
-        if (terrain[newCords[0]][newCords[1]].getType() == CellType.GOLD){
-            terrain[newCords[0]][newCords[1]].setType(CellType.GRASS);
-            terrain[newCords[0]][newCords[1]].setIcon(CellType.GRASS.getIcon());
-            System.out.println(owner + " получил 100 золота");
-            if (owner == OwnerType.PLAYER) {
-                player.plusGold(100);
-            } else {
-                computer.plusGold(100);
-            }
-        }
-    }
-
-    public boolean isEnemyCastle(int y, int x, OwnerType owner) {
-        return owner.equals(OwnerType.COMPUTER) ? (x == 0 && y == 0) : (x == m - 1 && y == n - 1);
-    }
-
-    public boolean isEnemy(int y, int x, OwnerType owner) {
-        Cell cell = objects[y][x];
-        if (cell != null) {
-            if (owner == OwnerType.COMPUTER) {
-                return cell.getType() == CellType.PLAYER_HERO || cell.getType() == CellType.PLAYER_UNIT;
-            } else {
-                return cell.getType() == CellType.COMPUTER_HERO || cell.getType() == CellType.COMPUTER_UNIT;
-            }
-        }
-        return false;
-    }
-
-    public void kill(int y, int x) {
-        this.objects[y][x] = null;
+        System.out.println();
     }
 }

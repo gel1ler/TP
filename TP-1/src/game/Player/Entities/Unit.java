@@ -22,18 +22,6 @@ public class Unit extends Entity {
         return hp;
     }
 
-    public int getDamage() {
-        return damage;
-    }
-
-    public int getFightDist() {
-        return fightDist;
-    }
-
-    public int getMoveDist() {
-        return moveDist;
-    }
-
     @Override
     public String toString() {
         return getName() + " (HP: " + hp + ", DMG: " + damage + ")";
@@ -47,7 +35,8 @@ public class Unit extends Entity {
     public boolean attack(Unit victim) {
         boolean isAlive = victim.minusHp(this.damage);
         if (isAlive) {
-            System.out.println("У вражеского Юнита " + victim.getName() + " осталось " + victim.getHp() + " HP");
+            String shown = victim.getOwner().equals(OwnerType.PERSON) ? "вашего" : "вражеского";
+            System.out.println("У " + shown + " Юнита " + victim.getName() + " осталось " + victim.getHp() + " HP");
         }
         return isAlive;
     }

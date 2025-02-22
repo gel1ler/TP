@@ -7,13 +7,12 @@ import game.Player.Player;
 import java.util.*;
 
 public class MainMap extends Map {
-    //Place gold
-
-    public MainMap(int n, int m, Player player, Player computer) {
-        super(n, m, player, computer);
+    public MainMap(int n, int m, Player person, Player computer) {
+        super(n, m, person, computer);
     }
 
     private void setHeroes(int startY, int startX, Player owner) {
+        int[][] directions = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1},{0, -1}, {-1, -1}};
         List<Hero> heroes = owner.getHeroes();
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{startY, startX});
@@ -21,40 +20,18 @@ public class MainMap extends Map {
         boolean[][] visited = new boolean[objects.length][objects[0].length];
         visited[startY][startX] = true;
         int placedHeroes = 0;
-        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
         while (!queue.isEmpty() && placedHeroes < heroes.size()) {
             int[] current = queue.poll();
-            int y = current[0];
-            int x = current[1];
+            int y = current[0], x = current[1];
 
-            // Пропускаем клетку (0, 0)
-            if (x == startX && y == startY) {
-                for (int[] dir : directions) {
-                    int newY = y + dir[0];
-                    int newX = x + dir[1];
-
-                    if (newX >= 0 && newX < objects.length && newY >= 0 && newY < objects[0].length && !visited[newY][newX]) {
-                        visited[newY][newX] = true;
-                        queue.add(new int[]{newY, newX});
-                    }
-                }
-                continue;
+            if ((x != startX || y != startY) && (objects[y][x] == null || objects[y][x].empty())) {
+                objects[y][x] = new Cell(owner.getCellType());
+                heroes.get(placedHeroes++).setPos(y, x);
             }
 
-            // Если клетка свободна, размещаем героя
-            if (objects[y][x] == null || objects[y][x].empty()) {
-                objects[y][x] = new Cell(Objects.equals(owner.getName(), "player") ? CellType.PLAYER_HERO : CellType.COMPUTER_HERO);
-                heroes.get(placedHeroes).setPos(y, x);
-                placedHeroes++;
-            }
-
-            // Добавляем соседние клетки в очередь
             for (int[] dir : directions) {
-                int newY = y + dir[0];
-                int newX = x + dir[1];
-
-                // Проверяем, что новые координаты в пределах массива и клетка не посещена
+                int newY = y + dir[0], newX = x + dir[1];
                 if (newX >= 0 && newX < objects.length && newY >= 0 && newY < objects[0].length && !visited[newY][newX]) {
                     visited[newY][newX] = true;
                     queue.add(new int[]{newY, newX});
@@ -62,7 +39,6 @@ public class MainMap extends Map {
             }
         }
 
-        // Если героев больше, чем свободных клеток
         if (placedHeroes < heroes.size()) {
             System.out.println("Недостаточно свободных клеток для размещения всех героев!");
         }
@@ -78,17 +54,42 @@ public class MainMap extends Map {
         divideMap();
 
         //Castles
-        terrain[0][0] = new Cell(CellType.PLAYER_CASTLE);
+        terrain[0][0] = new Cell(CellType.PERSON_CASTLE);
         terrain[n - 1][m - 1] = new Cell(CellType.COMPUTER_CASTLE);
         createRoad();
-        setHeroes(0, 0, player);
+        setHeroes(0, 0, person);
         setHeroes(n - 1, m - 1, computer);
 
 //        createObstacles(20); // Не симметрично
     }
 
-    public void updateHeroes() {
-        System.out.println(Arrays.deepToString(objects));
-        player.getHeroes(); //координаты исходных ребят == 0
+    public void updateHeroes(int startX, int startY) {
+        int[][] directions = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1},{0, -1}, {-1, -1}};
+        for (Hero hero : person.getHeroes()) {
+            boolean[][] visited = new boolean[objects.length][objects[0].length];
+
+            if (hero.getY() == 0 && hero.getX() == 0) {
+                Queue<int[]> queue = new LinkedList<>();
+                queue.add(new int[]{0, 0});
+
+                while (!queue.isEmpty()) {
+                    int[] current = queue.poll();
+                    int y = current[0], x = current[1];
+                    if ((x != startX || y != startY) && (objects[y][x] == null || objects[y][x].empty())) {
+                        objects[y][x] = new Cell(CellType.PERSON_HERO);
+                        hero.setPos(y, x);
+                        break;
+                    }
+
+                    for (int[] dir : directions) {
+                        int newY = y + dir[0], newX = x + dir[1];
+                        if (newX >= 0 && newX < objects.length && newY >= 0 && newY < objects[0].length && !visited[newY][newX]) {
+                            visited[newY][newX] = true;
+                            queue.add(new int[]{newY, newX});
+                        }
+                    }
+                }
+            }
+        }
     }
 }

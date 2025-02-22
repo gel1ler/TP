@@ -1,7 +1,7 @@
 package game;
 
 public enum OwnerType {
-    PLAYER("player"),
+    PERSON("person"),
     COMPUTER("computer");
     
     private final String owner;

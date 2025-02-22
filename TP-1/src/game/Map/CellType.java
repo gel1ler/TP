@@ -4,12 +4,12 @@ public enum CellType {
     GRASS(150, "🌿"),
     ROAD(25, "🟫"),
     OBSTACLE(Integer.MAX_VALUE, "🚧"),
-    PLAYER_CASTLE(0, "🏰"),
+    PERSON_CASTLE(0, "🏰"),
     COMPUTER_CASTLE(0, "\uD83C\uDFEF"),
-    PLAYER_ZONE(100, "\uD83D\uDD34"), // синий
+    PERSON_ZONE(100, "\uD83D\uDD34"), // синий
     COMPUTER_ZONE(100, "\uD83D\uDD35"),
-    PLAYER_HERO(0, "\uD83E\uDDB8"),
-    PLAYER_UNIT(0, "\uD83E\uDD20"),
+    PERSON_HERO(0, "\uD83E\uDDB8"),
+    PERSON_UNIT(0, "\uD83E\uDD20"),
     COMPUTER_HERO(0, "\uD83E\uDDB9"),
     COMPUTER_UNIT(0, "\uD83D\uDE08"),
     FOG(150, "\uD83C\uDF2B"),

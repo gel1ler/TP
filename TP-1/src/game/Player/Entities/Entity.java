@@ -10,9 +10,6 @@ public class Entity extends Buy {
     private int x = 0;
     private int y = 0;
     private int movementPoints;
-    private final int fullStraightPenalty = 100;
-    private final int fullDiagonalPenalty = (int) Math.sqrt(2) * fullStraightPenalty;
-    private static final Scanner scanner = new Scanner(System.in);
 
     public Entity(String name, int cost, int movementPoints, OwnerType owner) {
         super(name, cost, owner);
@@ -36,14 +33,6 @@ public class Entity extends Buy {
         return this.y;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public void setPos(int y, int x) {
         this.y = y;
         this.x = x;
@@ -55,5 +44,9 @@ public class Entity extends Buy {
 
     public void minusMP(int cost) {
         this.movementPoints -= cost;
+    }
+
+    public int getMP() {
+        return this.movementPoints;
     }
 }

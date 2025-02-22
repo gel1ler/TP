@@ -16,12 +16,12 @@ public class Tavern extends Building {
     private final Player owner;
 
     public Tavern(Player owner) {
-        super("Таверна", 50, owner.getName() == "computer" ? OwnerType.COMPUTER : OwnerType.PLAYER); // Вызов конструктора Building
-        this.shop = new Shop<>(owner, createAvailableItems(owner));
+        super("Таверна", 50, owner.getOwnerType()); // Вызов конструктора Building
+        this.shop = new Shop<>(owner, createAvailableItems());
         this.owner = owner;
     }
 
-    private List<Entity> createAvailableItems(Player player) {
+    private List<Entity> createAvailableItems() {
         List<Entity> availableHeroes = new ArrayList<>();
         availableHeroes.add(new Hero(HeroType.BARBARIAN, null));
         availableHeroes.add(new Hero(HeroType.KNIGHT, null));
@@ -38,7 +38,7 @@ public class Tavern extends Building {
             Entity item = shop.getAvailableItems().get(selected - 1);
             if (item instanceof Hero && owner.canAfford(item)) {
                 shop.buyItem(item);
-                owner.addHero((Hero) item);
+                owner.addHero(new Hero(((Hero) item).getHeroType(), owner.getOwnerType()));
             } else {
                 System.out.println("Недостаточно золота для покупки: " + item.getName());
             }

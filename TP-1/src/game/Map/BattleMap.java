@@ -11,17 +11,17 @@ import java.util.Objects;
 import java.util.Queue;
 
 public class BattleMap extends Map {
-    private final Hero playerHero;
+    private final Hero personHero;
     private final Hero compHero;
 
-    public BattleMap(int n, int m, Player player, Player computer, Hero playerHero, Hero compHero) {
-        super(n, m, player, computer);
-        if (playerHero == null || compHero == null) {
+    public BattleMap(int n, int m, Player person, Player computer, Hero personHero, Hero compHero) {
+        super(n, m, person, computer);
+        if (personHero == null || compHero == null) {
             throw new IllegalArgumentException("Hero objects cannot be null");
         }
-        this.playerHero = playerHero;
+        this.personHero = personHero;
         this.compHero = compHero;
-        setUnits(0, 0, playerHero);
+        setUnits(0, 0, personHero);
         setUnits(m - 1, m - 1, compHero);
     }
 
@@ -60,7 +60,7 @@ public class BattleMap extends Map {
 
             // Если клетка свободна, размещаем героя
             if (objects[y][x] == null || objects[y][x].empty()) {
-                objects[y][x] = new Cell(Objects.equals(hero.getOwner(), OwnerType.PLAYER) ? CellType.PLAYER_UNIT : CellType.COMPUTER_UNIT);
+                objects[y][x] = new Cell(Objects.equals(hero.getOwner(), OwnerType.PERSON) ? CellType.PERSON_UNIT : CellType.COMPUTER_UNIT);
                 units.get(placedUnits).setPos(y, x);
                 placedUnits++;
             }
@@ -94,7 +94,7 @@ public class BattleMap extends Map {
         divideMap();
 
         //Heroes
-        terrain[0][0] = new Cell(CellType.PLAYER_HERO);
+        terrain[0][0] = new Cell(CellType.PERSON_HERO);
         terrain[n - 1][m - 1] = new Cell(CellType.COMPUTER_HERO);
         createRoad();
     }

@@ -13,20 +13,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Battle extends Game {
-    private BattleMap battleMap;
-    private Player player, computer;
-    private Hero playerHero, computerHero;
+    private final BattleMap battleMap;
+    private final Player person, computer;
+    private final Hero personHero, computerHero;
     private Unit selectedUnit;
     private boolean isBattleOver;
-    private Map mainMap;
+    private final Map mainMap;
 
-    public Battle(int n, int m, Player player, Player computer, Hero playerHero, Hero computerHero, Map mainMap) {
+    public Battle(int n, int m, Player murderer, Player victim, Hero murdererHero, Hero victimHero, Map mainMap) {
         super(n, m);
-        this.player = player;
-        this.computer = computer;
-        this.playerHero = playerHero;
-        this.computerHero = computerHero;
-        this.battleMap = new BattleMap(n, m, player, computer, playerHero, computerHero);
+        boolean isPlayerMurderer = murderer.getOwnerType().equals(OwnerType.PERSON);
+        this.person = isPlayerMurderer ? murderer : victim;
+        this.computer = isPlayerMurderer ? victim : murderer;
+        this.personHero = isPlayerMurderer ? murdererHero : victimHero;
+        this.computerHero = isPlayerMurderer ? victimHero : murdererHero;
+        this.battleMap = new BattleMap(n, m, person, computer, personHero, computerHero);
         this.mainMap = mainMap;
     }
 
@@ -36,14 +37,16 @@ public class Battle extends Game {
 
         battleMap.render();
         while (!isBattleOver) {
-            playerTurn();
+            personTurn();
+            battleMap.render();
+            computerTurn();
             battleMap.render();
         }
         System.out.println("===FIGHT IS OVER===");
     }
 
     private Unit selectUnit() {
-        List<Unit> units = playerHero.getUnits();
+        List<Unit> units = personHero.getUnits();
         if (units.isEmpty()) {
             return null;
         }
@@ -62,7 +65,7 @@ public class Battle extends Game {
         }
     }
 
-    private void playerTurn() {
+    private void personTurn() {
         boolean canAtack = false, canInvade = false;
 
         //Пока не будет сделан выбор юнита
@@ -72,12 +75,12 @@ public class Battle extends Game {
         int y = selectedUnit.getY();
         int x = selectedUnit.getX();
 
-        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.PLAYER);
+        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.PERSON, 1);
         String helperText = "";
 
-        int[] enemyCoords = nearby.get("enemy");
+        int[] enemyCords = nearby.get("enemy");
 
-        if (enemyCoords != null) {
+        if (enemyCords != null) {
             canAtack = true;
             helperText = "3 - Атаковать\t\t";
         }
@@ -90,14 +93,14 @@ public class Battle extends Game {
 
         switch (action) {
             case 1:
-                while (move(selectedUnit, battleMap)) ;
+                while (move(selectedUnit, battleMap, false)) ;
                 break;
             case 2:
                 System.out.println("Ход пропущен.");
                 break;
             case 3:
                 if (canAtack) {
-                    Unit computerUnit = computerHero.getUnit(enemyCoords);
+                    Unit computerUnit = computerHero.getUnit(enemyCords);
                     attack(selectedUnit, computerUnit);
                     break;
                 }
@@ -117,15 +120,86 @@ public class Battle extends Game {
         }
     }
 
+    private void computerTurn() {
+        System.out.println("Ход компьютера");
+
+        Unit computerUnit = selectComputerUnit();
+        if (computerUnit == null) {
+            System.out.println("У компьютера нет юнитов для хода.");
+            return;
+        }
+
+        int y = computerUnit.getY();
+        int x = computerUnit.getX();
+
+        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.COMPUTER, 1);
+        int[] enemyCoords = nearby.get("enemy");
+
+        if (enemyCoords != null) {
+            System.out.println("Компьютер атакует врага!");
+            Unit personUnit = personHero.getUnit(enemyCoords);
+            attack(computerUnit, personUnit);
+        } else {
+            System.out.println("Компьютер перемещает юнита.");
+            moveComputerUnit(computerUnit);
+        }
+
+        if (personHero.getUnitsCount() == 0) {
+            isBattleOver = true;
+            System.out.println("Все юниты игрока уничтожены!");
+        }
+    }
+
+    private Unit selectComputerUnit() {
+        List<Unit> units = computerHero.getUnits();
+        if (units.isEmpty()) {
+            return null;
+        }
+
+        return units.getFirst();
+    }
+
+    private void moveComputerUnit(Unit unit) {
+        // Простая логика перемещения: двигаться в сторону ближайшего врага
+        int y = unit.getY();
+        int x = unit.getX();
+
+        // Поиск ближайшего врага
+        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.COMPUTER, 3);
+        int[] enemyCoords = nearby.get("enemy");
+
+        if (enemyCoords != null) {
+            System.out.println("Двигается к игроку");
+            int enemyY = enemyCoords[0];
+            int enemyX = enemyCoords[1];
+
+            // Определение направления движения
+            int deltaY = Integer.compare(enemyY, y);
+            int deltaX = Integer.compare(enemyX, x);
+
+            int newY = y + deltaY;
+            int newX = x + deltaX;
+
+            // Проверка доступности клетки и перемещение
+            if (battleMap.isCellAvailable(newY, newX, false)) {
+                battleMap.moveObject(new int[]{y, x}, new int[]{newY, newX}, unit.getOwner());
+                unit.setPos(newY, newX);
+            }
+        } else {
+            System.out.println("Двигается рандомно");
+            move(unit, battleMap, true);
+        }
+    }
+
     private void attack(Unit murderer, Unit victim) {
         boolean isAlive = murderer.attack(victim);
         if (!isAlive) {
             System.out.println("Юнит " + victim.getName() + " убит");
             Player tempPlayer;
             Hero tempHero;
-            if (victim.getOwner() == OwnerType.PLAYER) {
-                tempPlayer = player;
-                tempHero = playerHero;
+            if (victim.getOwner() == OwnerType.PERSON) {
+                tempPlayer = person;
+                tempHero = personHero;
             } else {
                 tempPlayer = computer;
                 tempHero = computerHero;

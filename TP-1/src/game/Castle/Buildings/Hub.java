@@ -17,12 +17,12 @@ public class Hub extends Building {
     private final Player owner;
 
     public Hub(Player owner) {
-        super("Хаб", 25, owner.getName() == "computer" ? OwnerType.COMPUTER : OwnerType.PLAYER);
-        this.shop = new Shop<>(owner, createAvailableItems(owner));
+        super("Хаб", 25, owner.getOwnerType());
+        this.shop = new Shop<>(owner, createAvailableItems());
         this.owner = owner;
     }
 
-    private List<Entity> createAvailableItems(Player player) {
+    private List<Entity> createAvailableItems() {
         List<Entity> availableUnits = new ArrayList<>();
         availableUnits.add(new Unit(UnitType.CAVALRYMAN, null));
         availableUnits.add(new Unit(UnitType.CROWSBOWMAN, null));

@@ -6,20 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hero extends Entity {
-    private int movementRange;
     private final List<Unit> units = new ArrayList<>();
+    private HeroType heroType;
 
     public Hero(HeroType heroType, OwnerType owner) {
         super(heroType.getName(), heroType.getCost(), heroType.getMovementPoints(), owner);
-        this.movementRange = heroType.getMovementRange();
-    }
-
-    public void increaseMovementRange(int amount) {
-        movementRange += amount;
-    }
-
-    public int getMovementRange() {
-        return movementRange;
+        this.heroType = heroType;
     }
 
     public void addUnit(Unit unit) {
@@ -47,11 +39,15 @@ public class Hero extends Entity {
         this.units.removeIf(unit -> unit.getX() == victim.getX() && unit.getY() == victim.getY());
     }
 
-    public Unit getUnit(int[] enemyCoords) {
+    public Unit getUnit(int[] enemyCords) {
         for (Unit i : this.units) {
-            if (i.getY() == enemyCoords[0] && i.getX() == enemyCoords[1])
+            if (i.getY() == enemyCords[0] && i.getX() == enemyCords[1])
                 return i;
         }
         return null;
+    }
+
+    public HeroType getHeroType() {
+        return heroType;
     }
 }
