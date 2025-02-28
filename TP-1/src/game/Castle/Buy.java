@@ -3,9 +3,9 @@ package game.Castle;
 import game.OwnerType;
 
 public class Buy {
-    private String name;
-    private int cost;
-    private OwnerType owner;
+    private final String name;
+    private final int cost;
+    private final OwnerType owner;
 
     public Buy(String name, int cost, OwnerType owner) {
         this.name = name;

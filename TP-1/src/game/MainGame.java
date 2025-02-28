@@ -12,38 +12,38 @@ public class MainGame extends Game {
     private Player computer;
     private Hero selectedHero;
     private int turnsInCastle = Integer.MAX_VALUE;
+    private OwnerType invader;
 
     public MainGame(int n, int m) {
         super(n, m);
     }
 
-    @Override
     public void start() {
         initializeGame();
         person.getCastle().enter(); // Покупка и найм
-        if (isGameOverFor(person) || isGameOverFor(computer)) {
-            setGameEnd();
-        } else {
+
+        if (isGameOverFor(person)) setGameEnd(OwnerType.PERSON);
+        else {
             gameMap = new MainMap(n, m, person, computer);
             gameMap.render();
-
-            while (!isGameOverFor(person) || !isGameOverFor(computer) || turnsInCastle == 0) {
+            while (!isGameOverFor(person) || !isGameOverFor(computer) || turnsInCastle != 0) {
                 personTurn();
                 gameMap.render();
                 if (isGameOverFor(computer)) {
-                    setGameEnd();
-                    System.out.println("Машина проиграла...");
+                    setGameEnd(OwnerType.COMPUTER);
                     break;
                 }
-                System.out.println();
                 computerTurn();
                 gameMap.render();
                 if (isGameOverFor(person)) {
-                    setGameEnd();
-                    System.out.println("Человек проиграл...");
+                    setGameEnd(OwnerType.PERSON);
                     break;
                 }
                 if (turnsInCastle <= 2) turnsInCastle -= 1;
+                if (turnsInCastle < 0) {
+                    setGameEnd(this.invader.getEnemy());
+                    break;
+                }
             }
         }
     }
@@ -74,8 +74,8 @@ public class MainGame extends Game {
         return !ownerHasHeroes || !allHeroesHaveUnits || ownerHasAllBuildings;
     }
 
-    private void setGameEnd() {
-        isEnded = true;
+    private void setGameEnd(OwnerType looser) {
+        System.out.println(looser.name() + " проиграл...");
         System.out.println("---------------------- \n  G A M E   O V E R \n----------------------");
     }
 
@@ -116,14 +116,15 @@ public class MainGame extends Game {
                 break;
             case 3:
                 if (canAtack) {
-                    startBattle(person, computer, new int[]{selectedHero.getY(), selectedHero.getY()}, enemyCords);
+                    startBattle(person, computer, new int[]{selectedHero.getY(), selectedHero.getX()}, enemyCords);
                     break;
                 }
                 System.out.println("Неверный выбор.");
             case 4:
                 if (canInvade) {
-                    turnsInCastle = 2;
-                    computer.getCastle().invasion(selectedHero);
+                    this.turnsInCastle = 2;
+                    this.invader = OwnerType.PERSON;
+                    gameMap.registerInvasion(selectedHero);
                     break;
                 }
                 System.out.println("Неверный выбор.");
@@ -162,6 +163,7 @@ public class MainGame extends Game {
         if (enemyCords != null) {
             System.out.println("Компьютер атакует врага!");
             startBattle(computer, person, new int[]{y, x}, enemyCords);
+
         } else if (castleCords != null) {
             System.out.println("Компьютер захватывает замок!");
             // Логика захвата замка
@@ -179,7 +181,7 @@ public class MainGame extends Game {
 
         System.out.println("Выберите героя:");
         for (int i = 0; i < heroes.size(); i++) {
-            System.out.println((i + 1) + " - " + heroes.get(i).getName() + " на (" + heroes.get(i).getY() + ", " + heroes.get(i).getX() + ")");
+            System.out.print((i + 1) + " - " + heroes.get(i).getName() + " на (" + heroes.get(i).getY() + ", " + heroes.get(i).getX() + ")\t\t");
         }
 
         int selected = scanner.nextInt() - 1;
@@ -204,6 +206,7 @@ public class MainGame extends Game {
         Hero murdererHero = murderer.getHeroByCords(murdererCords);
         Hero victimHero = victim.getHeroByCords(victimCords);
         Battle battle = new Battle(n, m, murderer, victim, murdererHero, victimHero, gameMap);
-        battle.start();
+        OwnerType looser = battle.start();
+        if (looser == OwnerType.PERSON) selectedHero = null;
     }
 }

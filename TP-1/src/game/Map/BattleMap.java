@@ -11,16 +11,11 @@ import java.util.Objects;
 import java.util.Queue;
 
 public class BattleMap extends Map {
-    private final Hero personHero;
-    private final Hero compHero;
-
     public BattleMap(int n, int m, Player person, Player computer, Hero personHero, Hero compHero) {
         super(n, m, person, computer);
         if (personHero == null || compHero == null) {
             throw new IllegalArgumentException("Hero objects cannot be null");
         }
-        this.personHero = personHero;
-        this.compHero = compHero;
         setUnits(0, 0, personHero);
         setUnits(m - 1, m - 1, compHero);
     }

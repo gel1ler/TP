@@ -6,8 +6,6 @@ public class Unit extends Entity {
     int hp;
     int damage;
     int fightDist;
-    int moveDist;
-
     //Отряд
 
     public Unit(UnitType unitType, OwnerType owner) {
@@ -15,11 +13,14 @@ public class Unit extends Entity {
         this.hp = unitType.getHp();
         this.damage = unitType.getDamage();
         this.fightDist = unitType.getFightDist();
-        this.moveDist = unitType.getMoveDist();
     }
 
     public int getHp() {
         return hp;
+    }
+
+    public int getFightDist() {
+        return fightDist;
     }
 
     @Override

@@ -18,6 +18,7 @@ public class Battle extends Game {
     private final Hero personHero, computerHero;
     private Unit selectedUnit;
     private boolean isBattleOver;
+    private OwnerType looser;
     private final Map mainMap;
 
     public Battle(int n, int m, Player murderer, Player victim, Hero murdererHero, Hero victimHero, Map mainMap) {
@@ -31,8 +32,7 @@ public class Battle extends Game {
         this.mainMap = mainMap;
     }
 
-    @Override
-    public void start() {
+    public OwnerType start() {
         System.out.println("\n===FIGHT===\n");
 
         battleMap.render();
@@ -42,6 +42,14 @@ public class Battle extends Game {
             computerTurn();
             battleMap.render();
         }
+        return looser;
+    }
+
+    protected void setGameEnded(OwnerType owner) {
+        isBattleOver = true;
+        looser = owner;
+        String whose = owner == OwnerType.COMPUTER ? "компьютера" : "человека";
+        System.out.println("Все юниты " + whose + " уничтожены!");
         System.out.println("===FIGHT IS OVER===");
     }
 
@@ -53,7 +61,7 @@ public class Battle extends Game {
 
         System.out.println("Выберите Юнита:");
         for (int i = 0; i < units.size(); i++) {
-            System.out.println((i + 1) + " - Юнит на (" + units.get(i).getX() + ", " + units.get(i).getY() + ")");
+            System.out.println((i + 1) + " - " + units.get(i).getName() + " на (" + units.get(i).getX() + ", " + units.get(i).getY() + ")");
         }
 
         int selected = scanner.nextInt() - 1;
@@ -66,7 +74,7 @@ public class Battle extends Game {
     }
 
     private void personTurn() {
-        boolean canAtack = false, canInvade = false;
+        boolean canAtack = false;
 
         //Пока не будет сделан выбор юнита
         while (selectedUnit == null) {
@@ -75,7 +83,7 @@ public class Battle extends Game {
         int y = selectedUnit.getY();
         int x = selectedUnit.getX();
 
-        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.PERSON, 1);
+        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.PERSON, selectedUnit.getFightDist());
         String helperText = "";
 
         int[] enemyCords = nearby.get("enemy");
@@ -105,12 +113,6 @@ public class Battle extends Game {
                     break;
                 }
                 System.out.println("Неверный выбор.");
-            case 4:
-                if (canInvade) {
-                    break;
-                }
-                System.out.println("Неверный выбор.");
-                break;
             case 0:
                 selectedUnit = null;
                 return;
@@ -124,15 +126,15 @@ public class Battle extends Game {
         System.out.println("Ход компьютера");
 
         Unit computerUnit = selectComputerUnit();
-        if (computerUnit == null) {
-            System.out.println("У компьютера нет юнитов для хода.");
+
+        if (computerUnit == null){
+            System.out.println("Comp unit is null");
             return;
         }
-
         int y = computerUnit.getY();
         int x = computerUnit.getX();
 
-        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.COMPUTER, 1);
+        HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.COMPUTER, computerUnit.getFightDist());
         int[] enemyCoords = nearby.get("enemy");
 
         if (enemyCoords != null) {
@@ -145,8 +147,7 @@ public class Battle extends Game {
         }
 
         if (personHero.getUnitsCount() == 0) {
-            isBattleOver = true;
-            System.out.println("Все юниты игрока уничтожены!");
+
         }
     }
 
@@ -195,25 +196,24 @@ public class Battle extends Game {
         boolean isAlive = murderer.attack(victim);
         if (!isAlive) {
             System.out.println("Юнит " + victim.getName() + " убит");
-            Player tempPlayer;
-            Hero tempHero;
+            Player killedPlayer;
+            Hero killedHero;
             if (victim.getOwner() == OwnerType.PERSON) {
-                tempPlayer = person;
-                tempHero = personHero;
+                killedPlayer = person;
+                killedHero = personHero;
             } else {
-                tempPlayer = computer;
-                tempHero = computerHero;
+                killedPlayer = computer;
+                killedHero = computerHero;
             }
 
-            tempHero.kill(victim);
-
-            if (tempHero.getUnitsCount() == 0) {
-                isBattleOver = true;
-                tempPlayer.kill(tempHero);
-                mainMap.kill(tempHero.getY(), tempHero.getX());
-            }
-
+            killedHero.kill(victim);
             battleMap.kill(victim.getY(), victim.getX());
+
+            if (killedHero.getUnitsCount() == 0) {
+                setGameEnded(killedHero.getOwner());
+                killedPlayer.kill(killedHero);
+                mainMap.kill(killedHero.getY(), killedHero.getX());
+            }
         }
     }
 }

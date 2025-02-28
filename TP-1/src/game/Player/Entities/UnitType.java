@@ -1,11 +1,11 @@
 package game.Player.Entities;
 
 public enum UnitType {
-    SWORDSMAN("Мечник", 5, 80, 15, 1, 3, 1000),
-    SPEARMAN("Копейщик", 5, 50, 10, 1, 2, 1000),
-    PALADIN("Паладин", 5, 100, 60, 1, 5, 1000),
-    CROWSBOWMAN("Арбалетчик", 5, 30, 20, 3, 2, 1000),
-    CAVALRYMAN("Кавалерист", 5, 60, 25, 2, 4, 1000);
+    SWORDSMAN("Мечник", 10, 80, 15, 1, 150),
+    SPEARMAN("Копейщик", 20, 50, 10, 2, 200),
+    PALADIN("Паладин", 30, 100, 50, 3, 300),
+    CROSSBOWMAN("Арбалетчик", 40, 30, 20, 3, 350),
+    CAVALRYMAN("Кавалерист", 50, 60, 25, 2, 400);
 
 
     private final String name;
@@ -13,16 +13,14 @@ public enum UnitType {
     private final int hp;
     private final int damage;
     private final int fightDist;
-    private final int moveDist;
     private final int movementPoints;
 
-    UnitType(String name, int cost, int hp, int damage, int fightDist, int moveDist, int movementPoints) {
+    UnitType(String name, int cost, int hp, int damage, int fightDist, int movementPoints) {
         this.name = name;
         this.cost = cost;
         this.hp = hp;
         this.damage = damage;
         this.fightDist = fightDist;
-        this.moveDist = moveDist;
         this.movementPoints = movementPoints;
     }
 
@@ -44,10 +42,6 @@ public enum UnitType {
 
     public int getFightDist() {
         return fightDist;
-    }
-
-    public int getMoveDist() {
-        return moveDist;
     }
 
     public int getMovementPoints() {

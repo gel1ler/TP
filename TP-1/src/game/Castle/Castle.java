@@ -12,9 +12,7 @@ import java.util.Scanner;
 
 public class Castle extends Shop<Building> {
     private final List<Building> buildings = new ArrayList<>();
-    private Player player;
-    private Hero invader;
-
+    private final Player player;
 
     public Castle(Player player) {
         super(player, createAvailableBuildings(player));
@@ -98,10 +96,5 @@ public class Castle extends Shop<Building> {
             Menu.displayMenu(mainMenu);
             selected = in.nextInt();
         }
-    }
-
-    public void invasion(Hero invader) {
-        System.out.println("Продержитесь в замке 2 хода и вы выиграете игру!");
-        this.invader = invader;
     }
 }

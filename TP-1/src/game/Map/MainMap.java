@@ -12,7 +12,7 @@ public class MainMap extends Map {
     }
 
     private void setHeroes(int startY, int startX, Player owner) {
-        int[][] directions = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1},{0, -1}, {-1, -1}};
+        int[][] directions = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
         List<Hero> heroes = owner.getHeroes();
         Queue<int[]> queue = new LinkedList<>();
         queue.add(new int[]{startY, startX});
@@ -64,7 +64,7 @@ public class MainMap extends Map {
     }
 
     public void updateHeroes(int startX, int startY) {
-        int[][] directions = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1},{0, -1}, {-1, -1}};
+        int[][] directions = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
         for (Hero hero : person.getHeroes()) {
             boolean[][] visited = new boolean[objects.length][objects[0].length];
 
@@ -90,6 +90,17 @@ public class MainMap extends Map {
                     }
                 }
             }
+        }
+    }
+
+    public void registerInvasion(Hero hero) {
+        objects[hero.getY()][hero.getX()] = null;
+        if (hero.getOwner() == OwnerType.PERSON) {
+            objects[n - 1][m - 1] = new Cell(CellType.PERSON_HERO);
+            hero.setPos(n - 1, m - 1);
+        } else {
+            objects[0][0] = new Cell(CellType.PERSON_HERO);
+            hero.setPos(n - 1, m - 1);
         }
     }
 }

@@ -9,9 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public abstract class Game {
+public class Game {
     protected Scanner scanner = new Scanner(System.in);
-    protected boolean isEnded = false;
     protected int n, m;
 
     public Game(int n, int m) {
@@ -103,7 +102,7 @@ public abstract class Game {
                     tempMP -= (int) cost;
                     map.moveObject(new int[]{entity.getY(), entity.getX()}, new int[]{newY, newX}, entity.getOwner());
                     entity.setPos(newY, newX);
-                    map.render();
+                    if (!auto) map.render();
                 } else {
                     if (!auto) System.out.println("Недостаточно очков передвижения на такой ход.");
                 }
@@ -112,6 +111,4 @@ public abstract class Game {
         System.out.println("Кончились очки передвижения на этот ход.");
         return false;
     }
-
-    public abstract void start();
 }

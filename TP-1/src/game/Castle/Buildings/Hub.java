@@ -1,7 +1,6 @@
 package game.Castle.Buildings;
 
 import game.Castle.Shop;
-import game.OwnerType;
 import game.Player.Entities.Entity;
 import game.Player.Entities.Hero;
 import game.Player.Entities.UnitType;
@@ -25,7 +24,7 @@ public class Hub extends Building {
     private List<Entity> createAvailableItems() {
         List<Entity> availableUnits = new ArrayList<>();
         availableUnits.add(new Unit(UnitType.CAVALRYMAN, null));
-        availableUnits.add(new Unit(UnitType.CROWSBOWMAN, null));
+        availableUnits.add(new Unit(UnitType.CROSSBOWMAN, null));
         availableUnits.add(new Unit(UnitType.PALADIN, null));
         availableUnits.add(new Unit(UnitType.SPEARMAN, null));
         availableUnits.add(new Unit(UnitType.SWORDSMAN, null));
