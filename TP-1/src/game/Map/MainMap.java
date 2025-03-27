@@ -1,7 +1,6 @@
 package game.Map;
 
-import game.MainGame;
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Player;
 import game.Utils.Menu.GameMenu;

@@ -11,8 +11,8 @@ import java.io.*;
 import static game.Main.getUserName;
 
 public class GameSave extends Save {
-    private static final String filePath = DbPaths.SAVES.getPath() + getUserName() + "/save ";
-    private static final String folderPath = DbPaths.SAVES.getPath() + getUserName();
+    private static final String folderPath = DbPaths.SAVES.getUserPath() + "games/";
+    private static final String filePath = folderPath + "save ";
 
     public static void writeSave(MainGame game, boolean auto) {
         int selected = 1;

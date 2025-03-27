@@ -1,12 +1,9 @@
 package game.Player;
 
+import game.Castle.Buildings.Building;
 import game.Castle.Buy;
 import game.Castle.Castle;
-import game.Map.CellType;
-import game.OwnerType;
 import game.Player.Entities.Hero;
-import game.Utils.Menu.GameMenu;
-import game.Utils.Menu.Menu;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -78,10 +75,6 @@ public class Player implements Serializable {
         return !getHeroes().isEmpty();
     }
 
-    public boolean hasCastle() {
-        return castle != null;
-    }
-
     public Hero getHeroByCords(int[] enemyCords) {
         return heroes.stream()
                 .filter(hero -> hero.getY() == enemyCords[0] && hero.getX() == enemyCords[1])
@@ -99,5 +92,9 @@ public class Player implements Serializable {
 
     public void buyRandom() {
 
+    }
+
+    public boolean hasBuilding(Building item) {
+        return this.castle.hasBuilding(item.getName());
     }
 }

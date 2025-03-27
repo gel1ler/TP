@@ -1,8 +1,8 @@
 package game;
 
+import DB.Saves.GameSave;
 import game.Utils.InputHandler;
 import game.Utils.Menu.MainMenu;
-import DB.Saves.GameSave;
 
 import java.io.IOException;
 

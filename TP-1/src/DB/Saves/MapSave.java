@@ -9,8 +9,8 @@ import java.io.*;
 import static game.Main.getUserName;
 
 public class MapSave extends Save {
-    private static final String filePath = DbPaths.MAPSAVES.getPath() + getUserName() + "/save ";
-    private static final String folderPath = DbPaths.MAPSAVES.getPath() + getUserName();
+    private static final String folderPath = DbPaths.SAVES.getUserPath() + "maps/";
+    private static final String filePath = folderPath + "save ";
 
     public static void writeSave(MainMap mainMap) {
         File file = new File(getSaveFileName(filePath, mainMap.getSizeInString()));

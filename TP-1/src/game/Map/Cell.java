@@ -1,8 +1,7 @@
 package game.Map;
 
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Utils.Menu.GameMenu;
-import game.Utils.Menu.MainMenu;
 
 import java.io.Serializable;
 

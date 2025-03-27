@@ -54,6 +54,10 @@ public class Castle extends Shop<Building> {
     }
 
     public void addBuildingToCastle(Building item){
+        if(player.hasBuilding(item)){
+            BuildingMenu.errorMessage("У вас уже есть это здание");
+            return;
+        }
         if (item != null && player.canAfford(item)) {
             buyItem(item);
             buildings.add(item);

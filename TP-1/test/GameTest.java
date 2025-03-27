@@ -1,7 +1,7 @@
 import game.Castle.Buildings.Hub;
 import game.Castle.Buildings.Tavern;
 import game.MainGame;
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Entities.HeroType;
 import game.Player.Entities.Unit;
@@ -15,7 +15,6 @@ import org.junit.rules.TestName;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.io.ByteArrayInputStream;
 
 import static junit.framework.TestCase.*;
 import static org.junit.Assert.assertArrayEquals;

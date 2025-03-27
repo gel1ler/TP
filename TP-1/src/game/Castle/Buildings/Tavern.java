@@ -1,9 +1,6 @@
 package game.Castle.Buildings;
 
 import game.Castle.Shop;
-import game.Map.MainMap;
-import game.Map.Map;
-import game.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Entities.Entity;
 import game.Player.Entities.HeroType;
@@ -13,7 +10,6 @@ import game.Utils.Menu.BuildingMenu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Tavern extends Building {
     private final Shop<Entity> shop;

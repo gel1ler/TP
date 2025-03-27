@@ -4,15 +4,13 @@ import game.Map.BattleMap;
 import game.Map.Map;
 import game.Player.Entities.Hero;
 import game.Player.Entities.Unit;
+import game.Player.OwnerType;
 import game.Player.Player;
 import game.Utils.InputHandler;
 import game.Utils.Menu.GameMenu;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Battle extends Game {
     private final BattleMap battleMap;

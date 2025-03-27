@@ -1,6 +1,6 @@
 package game.Utils.Menu;
 
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Player.Entities.Entity;
 import game.Player.Entities.Hero;
 import game.Player.Entities.Unit;

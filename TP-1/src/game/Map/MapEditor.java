@@ -1,6 +1,5 @@
 package game.Map;
 
-import DB.Saves.GameSave;
 import DB.Saves.MapSave;
 import game.Utils.InputHandler;
 import game.Utils.Menu.MainMenu;

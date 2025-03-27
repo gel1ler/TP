@@ -1,4 +1,4 @@
-package game;
+package game.Player;
 
 public enum OwnerType {
     PERSON("person"),

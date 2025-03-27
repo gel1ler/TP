@@ -2,7 +2,7 @@ import game.Castle.Buildings.Building;
 import game.Castle.Buildings.Hub;
 import game.Castle.Buildings.Stable;
 import game.Castle.Buildings.Tavern;
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Entities.HeroType;
 import game.Player.Entities.Unit;

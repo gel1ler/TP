@@ -1,6 +1,5 @@
 package game.Map;
 
-import game.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Entities.Unit;
 import game.Player.Player;
@@ -8,7 +7,6 @@ import game.Utils.Menu.GameMenu;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
 
 public class BattleMap extends Map {

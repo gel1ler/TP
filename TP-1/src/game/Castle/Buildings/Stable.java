@@ -1,13 +1,12 @@
 package game.Castle.Buildings;
 
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Player;
 import game.Utils.InputHandler;
 import game.Utils.Menu.BuildingMenu;
 
 import java.util.List;
-import java.util.Scanner;
 
 import static game.Utils.Menu.GameMenu.displayHeroes;
 

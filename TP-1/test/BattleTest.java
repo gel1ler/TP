@@ -1,6 +1,6 @@
 import game.Battle;
 import game.Map.MainMap;
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Entities.HeroType;
 import game.Player.Entities.Unit;

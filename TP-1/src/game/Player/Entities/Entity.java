@@ -2,10 +2,7 @@ package game.Player.Entities;
 
 import game.Castle.Buy;
 import game.Map.CellType;
-import game.Map.Map;
-import game.OwnerType;
-
-import java.util.Scanner;
+import game.Player.OwnerType;
 
 public class Entity extends Buy {
     protected CellType cellType;

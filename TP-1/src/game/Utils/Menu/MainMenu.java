@@ -1,10 +1,6 @@
 package game.Utils.Menu;
 
-import game.OwnerType;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.stream.Collectors;
+import game.Player.OwnerType;
 
 public class MainMenu extends Menu {
     public static void showStartMenu() {

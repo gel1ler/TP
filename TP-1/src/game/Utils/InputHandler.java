@@ -21,7 +21,7 @@ public class InputHandler {
             return scanner.nextInt();
         } catch (Exception e) {
             checkForSaveCommand();
-            return scanner.nextInt();
+            return getIntInput();
         }
     }
 

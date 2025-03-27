@@ -1,7 +1,6 @@
 package game.Castle;
 
-import game.OwnerType;
-import game.Utils.Menu.Menu;
+import game.Player.OwnerType;
 
 import java.io.Serializable;
 

@@ -5,12 +5,12 @@ import java.util.*;
 import DB.Saves.MapSave;
 import game.Map.MainMap;
 import game.Player.Entities.*;
+import game.Player.OwnerType;
 import game.Player.Player;
 import game.Utils.InputHandler;
 import game.Utils.Menu.GameMenu;
 import game.Utils.Menu.MainMenu;
 
-import static DB.Saves.GameSave.writeSave;
 import static game.Main.saveGame;
 
 public class MainGame extends Game {

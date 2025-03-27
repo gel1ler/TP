@@ -1,6 +1,6 @@
 package game.Map;
 
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Player.Player;
 import game.Utils.Menu.GameMenu;
 

@@ -1,9 +1,10 @@
 package DB;
 
+import static game.Main.getUserName;
+
 public enum DbPaths {
     USERS("db/users.txt"),
-    SAVES("db/saves/"),
-    MAPSAVES("db/mapsaves/");
+    SAVES("db/saves/");
 
     private final String path;
 
@@ -13,5 +14,9 @@ public enum DbPaths {
 
     public String getPath() {
         return path;
+    }
+
+    public String getUserPath() {
+        return path + getUserName() + "/";
     }
 }

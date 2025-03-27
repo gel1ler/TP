@@ -18,8 +18,10 @@ public class Users {
             FileWriter usersFile = new FileWriter(DbPaths.USERS.getPath(), true);
             usersFile.append(name).append("\n");
             usersFile.close();
-            createDirectory(DbPaths.SAVES.getPath() + name);
-            createDirectory(DbPaths.MAPSAVES.getPath() + name);
+
+            createDirectory(DbPaths.SAVES.getUserPath() + "games/");
+            createDirectory(DbPaths.SAVES.getUserPath() + "maps/");
+
             Menu.println("Вы зарегистрировались под именем " + name);
         }
     }

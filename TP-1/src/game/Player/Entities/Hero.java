@@ -1,7 +1,7 @@
 package game.Player.Entities;
 
 import game.Map.CellType;
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Utils.Menu.GameMenu;
 
 import java.util.ArrayList;

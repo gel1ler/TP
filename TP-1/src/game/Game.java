@@ -1,9 +1,7 @@
 package game;
 
-import game.Map.BattleMap;
-import game.Map.MainMap;
 import game.Map.Map;
-import game.OwnerType;
+import game.Player.OwnerType;
 import game.Player.Entities.Entity;
 import game.Utils.InputHandler;
 import game.Utils.Menu.GameMenu;
@@ -11,9 +9,6 @@ import game.Utils.Menu.Menu;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
 
 public class Game implements Serializable {
     protected int n, m;
