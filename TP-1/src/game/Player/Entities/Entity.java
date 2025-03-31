@@ -35,11 +35,7 @@ public class Entity extends Buy {
     }
 
     public int[] getPos() {
-        return new int[]{x, y};
-    }
-
-    public void minusMP(int cost) {
-        this.movementPoints -= cost;
+        return new int[]{y, x};
     }
 
     public int getMP() {

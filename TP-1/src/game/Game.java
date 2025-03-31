@@ -10,6 +10,8 @@ import game.Utils.Menu.Menu;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import static game.Main.incrementStats;
+
 public class Game implements Serializable {
     protected int n, m;
 
@@ -115,12 +117,19 @@ public class Game implements Serializable {
             }
 
             if (map.isCellAvailable(newY, newX, true)) {
+                //check
+                GameMenu.println("Шаг сделан");
                 double cost = map.getPenalty(newY, newX, entity.getOwner());
                 cost *= isDiagonal ? Math.sqrt(2) : 1;
                 if (tempMP >= cost) {
                     tempMP -= (int) cost;
                     setEntityPos(entity, map, new int[]{newY, newX});
-                    if (!auto) map.render();
+                    if (!auto) {
+                        //check
+                        GameMenu.println("Сработал инкремент");
+                        incrementStats("steps");
+                        map.render();
+                    }
                 } else {
                     if (!auto) Menu.println("Недостаточно очков передвижения на такой ход.");
                     return false;

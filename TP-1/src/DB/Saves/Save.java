@@ -6,28 +6,16 @@ import game.Utils.Menu.Menu;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import static DB.DBUtils.getFiles;
+import static DB.DBUtils.getFilesNames;
 import static game.Utils.Menu.Menu.displayArrays;
 
 public class Save {
-    private static File[] getSaveFiles(String folderPath) {
-        return new File(folderPath).listFiles();
-    }
-
-    private static List<String> getSaveFilesNames(String folderPath) {
-        return Arrays.stream(getSaveFiles(folderPath))
-                .filter(File::isFile)
-                .map(File::getName)
-                .collect(Collectors.toList());
-    }
-
     protected static File getSaveFile(String folderPath) {
-        File[] saveFiles = getSaveFiles(folderPath);
+        File[] saveFiles = getFiles(folderPath);
         Menu.println("Доступные сохранения:");
-        displayArrays(getSaveFilesNames(folderPath));
+        displayArrays(getFilesNames(folderPath));
 
         int selected = InputHandler.getIntInput();
         return saveFiles[selected - 1];

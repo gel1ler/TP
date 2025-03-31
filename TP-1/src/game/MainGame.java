@@ -40,7 +40,7 @@ public class MainGame extends Game {
     private void setGameMap() {
         GameMenu.println("Выберите карту:");
         GameMenu.println("0 - База, основа так сказать");
-        GameMenu.println("1 - Мои карты");
+        GameMenu.println("1 - Карты сообщества");
         int selected = InputHandler.getIntInput();
         if (selected == 1) {
             gameMap = MapSave.readSave();
@@ -49,7 +49,7 @@ public class MainGame extends Game {
         }
     }
 
-    public void start() {
+    public boolean start() {
         if (status == null) initializeGame();
         else if (status == GameStatus.BATTLE) {
             continueBattle();
@@ -62,6 +62,7 @@ public class MainGame extends Game {
         } else {
             gamePlay();
         }
+        return checkGameOver(computer);
     }
 
     private void setStatus(GameStatus status) {
@@ -77,13 +78,13 @@ public class MainGame extends Game {
         while (turnsInCastle != 0) {
             personTurn();
             gameMap.render();
-            if (checkGameOver(computer, OwnerType.COMPUTER)) {
+            if (checkGameOver(computer)) {
                 break;
             }
 
             computerTurn();
             gameMap.render();
-            if (checkGameOver(person, OwnerType.PERSON)) {
+            if (checkGameOver(person)) {
                 break;
             }
 
@@ -97,9 +98,9 @@ public class MainGame extends Game {
         }
     }
 
-    private boolean checkGameOver(Player player, OwnerType ownerType) {
+    private boolean checkGameOver(Player player) {
         if (isGameOverFor(player)) {
-            MainMenu.printGameEnd(ownerType);
+            MainMenu.printGameEnd(player.getOwnerType());
             return true;
         }
         return false;

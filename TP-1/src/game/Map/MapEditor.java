@@ -25,7 +25,7 @@ public class MapEditor {
         }
 
         assert mainMap != null;
-        mainMap.render();
+        mainMap.renderWithCords();
         while (true) {
             startEdit();
             mainMap.render();
@@ -48,6 +48,10 @@ public class MapEditor {
 
 //        TEST
         this.mainMap = new MainMap(5, 5);
+    }
+
+    public MainMap getMainMap(){
+        return mainMap;
     }
 
     private int[] selectCellCords() {

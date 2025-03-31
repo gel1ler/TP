@@ -20,7 +20,7 @@ public class Buy implements Serializable {
     }
 
     public void reverseOwner() {
-        if(owner==OwnerType.PERSON) owner = OwnerType.COMPUTER;
+        if (owner == OwnerType.PERSON) owner = OwnerType.COMPUTER;
         else owner = OwnerType.PERSON;
     }
 

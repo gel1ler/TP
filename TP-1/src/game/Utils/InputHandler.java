@@ -36,7 +36,6 @@ public class InputHandler {
                 Menu.println("Сохранение игры...");
                 saveGame(false);
                 Menu.println("Игра сохранена в файл!");
-                Menu.print("> ");
             } else {
                 scanner = new Scanner(System.in);
             }

@@ -4,10 +4,13 @@ import game.Castle.Buildings.Building;
 import game.Castle.Buy;
 import game.Castle.Castle;
 import game.Player.Entities.Hero;
+import game.Utils.Menu.GameMenu;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static game.Main.incrementStats;
 
 public class Player implements Serializable {
     private final String name;
@@ -83,6 +86,9 @@ public class Player implements Serializable {
     }
 
     public void kill(Hero victim) {
+        victim.display();
+        GameMenu.println(victim.getOwner().toString());
+        if(ownerType == OwnerType.COMPUTER) incrementStats("kills");
         this.heroes.removeIf(unit -> unit.getX() == victim.getX() && unit.getY() == victim.getY());
     }
 

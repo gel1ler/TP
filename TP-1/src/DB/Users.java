@@ -9,7 +9,6 @@ import java.util.Objects;
 import static DB.DBUtils.createDirectory;
 
 public class Users {
-
     public static void register(String name) throws IOException {
         boolean isRegistered = checkIsRegistered(name);
 
@@ -19,8 +18,7 @@ public class Users {
             usersFile.append(name).append("\n");
             usersFile.close();
 
-            createDirectory(DbPaths.SAVES.getUserPath() + "games/");
-            createDirectory(DbPaths.SAVES.getUserPath() + "maps/");
+            createDirectory(DbPaths.SAVES.getUserPath());
 
             Menu.println("Вы зарегистрировались под именем " + name);
         }

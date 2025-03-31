@@ -22,7 +22,7 @@ public class GameMenu extends Menu {
         }
 
         println("Выберите действие:");
-        println("1 - Переместить Героя\t\t2 - Пропустить ход\t\t" + helperText + "0 - Выбрать другого Героя\t\t10 - войти в замок\t\t100 - Сохранить игру");
+        println("1 - Переместить Героя\t\t2 - Пропустить ход\t\t" + helperText + "0 - Выбрать другого Героя\t\t10 - войти в замок");
     }
 
     public static void showAvailableUnitActions(int[] enemyCords, Unit selectedUnit) {
@@ -33,7 +33,7 @@ public class GameMenu extends Menu {
         if(selectedUnit.haveSuperAbility()) helperText += "4 - Использовать суперспособность\t\t";
 
         println("Выберите действие:");
-        print(helperText + "0 - Выбрать другого Юнита");
+        println(helperText + "0 - Выбрать другого Юнита");
     }
 
     public static void chooseEntity(List<? extends Entity> entities, String entityType) {

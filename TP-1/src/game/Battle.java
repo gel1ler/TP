@@ -9,6 +9,7 @@ import game.Player.Player;
 import game.Utils.InputHandler;
 import game.Utils.Menu.GameMenu;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -133,13 +134,13 @@ public class Battle extends Game {
         }
         return null;
     }
+
     private void computerTurn() {
         GameMenu.println("Ход компьютера");
 
         Unit computerUnit = selectComputerUnit();
 
         if (computerUnit == null) {
-            GameMenu.println("Comp units are null");
             setBattleEnded(computer, computerHero);
             return;
         }
@@ -150,13 +151,19 @@ public class Battle extends Game {
         HashMap<String, int[]> nearby = checkEnemies(y, x, battleMap, OwnerType.COMPUTER, computerUnit.getFightDist());
         int[] enemyCoords = nearby.get("enemy");
 
-        if (computerUnit.haveSuperAbility()) {
-            GameMenu.println("Компьютер пытается завербовать вашего юнита!");
-            Unit personUnit = personHero.getUnit(enemyCoords);
-            useSuperAbility(computerUnit, personUnit);
-            return;
-        }
         if (enemyCoords != null) {
+            if (computerUnit.haveSuperAbility()) {
+                GameMenu.println("Компьютер пытается завербовать вашего юнита!");
+                Unit personUnit = personHero.getUnit(enemyCoords);
+                try {
+                    useSuperAbility(computerUnit, personUnit);
+                } catch (NullPointerException e) {
+                    GameMenu.println("");
+                    GameMenu.errorMessage("Не удалось получить юнита по координатам");
+                }
+                return;
+            }
+
             GameMenu.println("Компьютер атакует врага!");
             Unit personUnit = personHero.getUnit(enemyCoords);
             attack(computerUnit, personUnit);
@@ -239,6 +246,7 @@ public class Battle extends Game {
                         }
                         GameMenu.println(recruit.getName() + " успешно завербован!");
                         recruiter.incrementRecruitedNumber();
+
                         recruit.reverseOwner();
                         battleMap.reverseCellOwner(recruit.getPos());
 

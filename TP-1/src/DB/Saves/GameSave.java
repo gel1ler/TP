@@ -11,8 +11,7 @@ import java.io.*;
 import static game.Main.getUserName;
 
 public class GameSave extends Save {
-    private static final String folderPath = DbPaths.SAVES.getUserPath() + "games/";
-    private static final String filePath = folderPath + "save ";
+    private static final String folderPath = DbPaths.SAVES.getUserPath();
 
     public static void writeSave(MainGame game, boolean auto) {
         int selected = 1;
@@ -24,11 +23,11 @@ public class GameSave extends Save {
 
         File file;
         file = switch (selected) {
-            case 1 -> new File(getSaveFileName(filePath));
+            case 1 -> new File(getSaveFileName(auto ? folderPath + "autosave " : folderPath + "save "));
             case 2 -> {
                 file = getSaveFile(folderPath);
 
-                File renamedFile = new File(getSaveFileName(filePath));
+                File renamedFile = new File(getSaveFileName(folderPath + "save "));
 
                 boolean isRenamed = file.renameTo(renamedFile);
 

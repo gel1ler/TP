@@ -5,7 +5,10 @@ import game.Utils.InputHandler;
 import game.Utils.Menu.MainMenu;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import static DB.Records.Records.insertRecords;
 import static DB.Saves.GameSave.writeSave;
 import static DB.Users.register;
 
@@ -14,6 +17,7 @@ import game.Map.MapEditor;
 public class Main {
     private static MainGame game;
     private static String name;
+    private static final Map<String, Long> stats = new HashMap<>();
 
     public static void saveGame(boolean auto) {
         writeSave(game, auto);
@@ -21,6 +25,10 @@ public class Main {
 
     public static String getUserName() {
         return name;
+    }
+
+    public static void incrementStats(String stat){
+        stats.put(stat, stats.get(stat) + 1);
     }
 
     public static void main(String[] args) throws IOException {
@@ -51,6 +59,18 @@ public class Main {
         }
 
         assert game != null;
-        game.start();
+        stats.put("kills", (long) 0);
+        stats.put("steps", (long) 0);
+        long startTime = System.currentTimeMillis();
+
+        boolean isWinner =  game.start();
+
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        stats.put("time", executionTime / 1000);
+
+        if(isWinner) {
+            insertRecords(name, stats);
+        }
     }
 }

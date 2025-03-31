@@ -5,6 +5,7 @@ import game.Player.Player;
 import game.Utils.Menu.GameMenu;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Map implements Serializable {
     protected int n, m;
@@ -120,6 +121,7 @@ public class Map implements Serializable {
             }
         }
     }
+
     public void kill(int y, int x) {
         this.objects[y][x] = null;
     }
@@ -158,7 +160,51 @@ public class Map implements Serializable {
         GameMenu.println("");
     }
 
-    public Cell getCell(int[] pos){
+    public Cell getCell(int[] pos) {
         return this.terrain[pos[0]][pos[1]];
+    }
+
+//    public void renderWithCords() {
+//        int y, x;
+//        for (int i = 0; i < n + 1; i++) {
+//            for (int j = 0; j < m + 1; j++) {
+//                y = i - 1;
+//                x = j - 1;
+//                if (j == 0) {
+//                    if (y != -1)
+//                        GameMenu.print(y + "  ");
+//                    else
+//                        GameMenu.print("   ");
+//                } else if (i == 0) {
+//                    GameMenu.print(x + "  ");
+//                } else {
+//                    if (objects[y][x] == null) {
+//                        GameMenu.print(terrain[y][x] + " ");
+//                    } else {
+//                        GameMenu.print(objects[y][x] + " ");
+//                    }
+//                }
+//            }
+//            GameMenu.println("");
+//        }
+//        GameMenu.println("");
+//    }
+
+    public void renderWithCords() {
+        GameMenu.print("   ");
+        for (int x = 0; x < m; x++) {
+            GameMenu.print(x + "  ");
+        }
+        GameMenu.println("");
+
+        for (int y = 0; y < n; y++) {
+            GameMenu.print(y + "  ");
+            for (int x = 0; x < m; x++) {
+                Cell cell = (objects[y][x] == null) ? terrain[y][x] : objects[y][x];
+                GameMenu.print(cell + " ");
+            }
+            GameMenu.println("");
+        }
+        GameMenu.println("");
     }
 }
