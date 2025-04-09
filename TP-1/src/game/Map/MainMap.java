@@ -18,6 +18,10 @@ public class MainMap extends Map {
         init();
     }
 
+    public boolean hasPlayers() {
+        return this.person != null && this.computer != null;
+    }
+
     public String getSizeInString() {
         return n + "x" + m;
     }
@@ -110,5 +114,10 @@ public class MainMap extends Map {
             objects[0][0] = new Cell(hero.getCellType(), hero.getOwner());
             hero.setPos(0, 0);
         }
+    }
+
+    public void setPlayers(Player person, Player computer) {
+        this.person = person;
+        this.computer = computer;
     }
 }

@@ -6,6 +6,8 @@ import game.Player.OwnerType;
 import game.Player.Entities.Hero;
 import game.Player.Entities.HeroType;
 import game.Player.Player;
+import game.Utils.Logs.GameLogger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +23,12 @@ public class PlayerTest {
         testHero = new Hero(HeroType.BARBARIAN, OwnerType.PERSON);
         testHero2 = new Hero(HeroType.BARBARIAN, OwnerType.PERSON);
         testCoords = new int[]{2, 2};
+        GameLogger.info("Player test ended");
+    }
+
+    @After
+    public void end(){
+        GameLogger.info("Player test ended");
     }
 
     @Test

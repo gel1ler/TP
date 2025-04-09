@@ -1,25 +1,60 @@
 package game.Utils.Menu;
 
 import game.Castle.Buildings.Building;
+import game.Utils.Logs.GameLogger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Menu {
-    public static void wrongChoose() {
-        println("Неверный выбор.");
+    public static void wrongChoice() {
+        errorMessage("Неверный выбор.");
+        GameLogger.warn("Неверный выбор");
     }
 
     public static void print(String message) {
-       System.out.print(message);
+        System.out.print(message);
     }
 
     public static void println(String message) {
         System.out.println(message);
     }
 
+    public static void println(int message) {
+        System.out.println(message);
+    }
+
     public static void errorMessage(String message) {
+        try {
+            System.err.flush();
+            System.err.println(message);
+            GameLogger.warn(message);
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            GameLogger.error("Задержка вывода сообщения была прервана: " + e.getMessage());
+        }
+    }
+
+    public static void errorMessage(String message, boolean isErrorLog) {
+
+        System.err.flush();
         System.err.println(message);
+
+        if (isErrorLog) {
+            GameLogger.error(message);
+        } else {
+            GameLogger.warn(message);
+        }
+
+        sleep(200);
+    }
+
+    public static void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException ignored) {
+        }
     }
 
     public static void displayMenu(List<Building> items, boolean priceDisplay) {
@@ -35,7 +70,7 @@ public class Menu {
         print("0 - Выйти \n");
     }
 
-    public static <T> void displayArrays(List<T> list){
+    public static <T> void displayArrays(List<T> list) {
         for (int i = 0; i < list.size(); i++) {
             println((i + 1) + " - " + list.get(i));
         }

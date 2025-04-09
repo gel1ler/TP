@@ -58,11 +58,10 @@ public class Castle extends Shop<Building> {
             BuildingMenu.errorMessage("У вас уже есть это здание");
             return;
         }
-        if (item != null && player.canAfford(item)) {
+        if (player.canAfford(item)) {
             buyItem(item);
             buildings.add(item);
         } else {
-            assert item != null;
             BuildingMenu.println("Недостаточно золота для покупки: " + item.getName());
         }
     }
@@ -103,6 +102,8 @@ public class Castle extends Shop<Building> {
                 case 2:
                     enterBuilding();
                     break;
+                default:
+                    BuildingMenu.wrongChoice();
             }
             BuildingMenu.displayAvailiableBuildings(menuItems);
             selected = InputHandler.getIntInput();

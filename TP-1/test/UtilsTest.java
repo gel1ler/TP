@@ -1,4 +1,6 @@
+import game.Utils.Logs.GameLogger;
 import game.Utils.Menu.Menu;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +13,13 @@ public class UtilsTest {
 
     @Before
     public void setUp() {
+        GameLogger.info("Utils test started");
         outputStream = new ByteArrayOutputStream();
+    }
+
+    @After
+    public void end(){
+        GameLogger.info("Utils test ended");
     }
 
     @Test

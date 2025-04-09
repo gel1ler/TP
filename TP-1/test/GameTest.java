@@ -7,7 +7,9 @@ import game.Player.Entities.HeroType;
 import game.Player.Entities.Unit;
 import game.Player.Entities.UnitType;
 import game.Player.Player;
+import game.Utils.Logs.GameLogger;
 import game.Utils.InputHandler;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,13 +33,15 @@ public class GameTest {
 
     @Before
     public void setUp() {
+        GameLogger.info("Game test started");
+
         person = new Player(185, OwnerType.PERSON);
         computer = new Player(185, OwnerType.COMPUTER);
         person.addHero(personTestHero);
         computer.addHero(computerTestHero);
         personTestHero.addUnit(new Unit(UnitType.SWORDSMAN, OwnerType.PERSON));
         computerTestHero.addUnit(new Unit(UnitType.RASCAL, OwnerType.COMPUTER));
-        mainGame = new MainGame(10, 10, person, computer);
+        mainGame = new MainGame(10, 10, person, computer, true);
         mainGame.getMap().setHeroes(0, 0, person);
         mainGame.getMap().setHeroes(10 - 1, 10 - 1, computer);
 
@@ -58,6 +62,11 @@ public class GameTest {
         }
 
         outputStream = new ByteArrayOutputStream();
+    }
+
+    @After
+    public void end(){
+        GameLogger.info("Game test ended");
     }
 
     @Test
@@ -157,8 +166,8 @@ public class GameTest {
 
     @Test
     public void moveOutOfBoundsTest() {
-        //Initial pos = (1, 0)
+        //Initial pos = (0, 1)
         mainGame.setEntityPos(personTestHero, mainGame.getMap(), new int[]{11, 11});
-        assertArrayEquals(new int[]{1, 0}, personTestHero.getPos());
+        assertArrayEquals(new int[]{0, 1}, personTestHero.getPos());
     }
 }

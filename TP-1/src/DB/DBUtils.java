@@ -24,9 +24,13 @@ public class DBUtils {
     }
 
     public static List<String> getFilesNames(String folderPath) {
-        return Arrays.stream(getFiles(folderPath))
-                .filter(File::isFile)
-                .map(File::getName)
-                .collect(Collectors.toList());
+        try {
+            return Arrays.stream(getFiles(folderPath))
+                    .filter(File::isFile)
+                    .map(File::getName)
+                    .collect(Collectors.toList());
+        } catch (NullPointerException e){
+            return null;
+        }
     }
 }

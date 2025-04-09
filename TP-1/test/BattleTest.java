@@ -6,10 +6,14 @@ import game.Player.Entities.HeroType;
 import game.Player.Entities.Unit;
 import game.Player.Entities.UnitType;
 import game.Player.Player;
+import game.Utils.Logs.GameLogger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static junit.framework.TestCase.*;
 
@@ -24,6 +28,7 @@ public class BattleTest {
 
     @Before
     public void setUp() {
+        GameLogger.info("Battle test started");
         murderer = new Player(185, OwnerType.PERSON);
         victim = new Player(185, OwnerType.COMPUTER);
         murdererHero = new Hero(HeroType.BARBARIAN, OwnerType.PERSON);
@@ -38,22 +43,35 @@ public class BattleTest {
         outputStream = new ByteArrayOutputStream();
     }
 
+    @After
+    public void end(){
+        GameLogger.info("Battle test ended");
+    }
+
     @Test
-    public void attackTest() {
+    public void attackTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         TestUtils.setOutputStream(outputStream);
         assertEquals(60, VHUnit.getHp());
-        battle.attack(MHUnit, VHUnit);
+
+        Method attackMethod = battle.getClass().getDeclaredMethod("attack", MHUnit.getClass(), VHUnit.getClass());
+        attackMethod.setAccessible(true);
+
+        attackMethod.invoke(battle, MHUnit, VHUnit);
 
         assertTrue(TestUtils.logsContains(outputStream, "У вражеского Юнита Кавалерист осталось 45 HP"));
         assertEquals(45, VHUnit.getHp());
     }
 
     @Test
-    public void killTest() {
+    public void killTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         TestUtils.setOutputStream(outputStream);
         assertTrue(VHUnit.getIsAlive());
+
+        Method attackMethod = battle.getClass().getDeclaredMethod("attack", MHUnit.getClass(), VHUnit.getClass());
+        attackMethod.setAccessible(true);
+
         for (int i = 0; i < 4; i++) {
-            battle.attack(MHUnit, VHUnit);
+            attackMethod.invoke(battle, MHUnit, VHUnit);
         }
 
         assertTrue(TestUtils.logsContains(outputStream, "Юнит Кавалерист убит"));

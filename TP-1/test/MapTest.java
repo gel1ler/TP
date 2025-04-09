@@ -1,14 +1,14 @@
 import DB.Saves.MapSave;
 import game.Map.MainMap;
 import game.Map.MapEditor;
+import game.Utils.Logs.GameLogger;
 import game.Utils.InputHandler;
 import game.Utils.Menu.MainMenu;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -21,8 +21,14 @@ public class MapTest {
 
     @Before
     public void setUp() {
+        GameLogger.info("Map test ended");
 //        mainMap = new MainMap(5, 5);
 //        mainMap, inputHandler, mainMenu, mapSave;
+    }
+
+    @After
+    public void end(){
+        GameLogger.info("Map test ended");
     }
 
     @Test
@@ -36,7 +42,7 @@ public class MapTest {
 
         generateNewMap.invoke(editor);
 
-        assertNotNull(editor.getMainMap()); // Нужен getter или рефлексия для поля
+        assertNotNull(editor.getMainMap());
     }
 
 //

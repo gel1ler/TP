@@ -12,6 +12,7 @@ import game.Utils.Menu.GameMenu;
 import game.Utils.Menu.MainMenu;
 
 import static game.Main.saveGame;
+import static game.Utils.Menu.GameMenu.chooseMapSave;
 
 public class MainGame extends Game {
     private MainMap gameMap;
@@ -27,23 +28,36 @@ public class MainGame extends Game {
         person = new Player(185, OwnerType.PERSON);
         computer = new Player(185, OwnerType.COMPUTER);
 //        gameMap = new MainMap(n, m, person, computer);
-        setGameMap();
+        setGameMap(false);
     }
 
     public MainGame(int n, int m, Player person, Player computer) {
         super(n, m);
         this.person = person;
         this.computer = computer;
-        setGameMap();
+        setGameMap(false);
     }
 
-    private void setGameMap() {
-        GameMenu.println("Выберите карту:");
-        GameMenu.println("0 - База, основа так сказать");
-        GameMenu.println("1 - Карты сообщества");
-        int selected = InputHandler.getIntInput();
+    public MainGame(int n, int m, Player person, Player computer, boolean auto) {
+        super(n, m);
+        this.person = person;
+        this.computer = computer;
+        setGameMap(auto);
+    }
+
+    private void setGameMap(boolean auto) {
+        int selected;
+        if (!auto) {
+            chooseMapSave();
+            selected = InputHandler.getIntInput();
+        } else selected = 0;
+
         if (selected == 1) {
             gameMap = MapSave.readSave();
+            assert gameMap != null;
+            if (!gameMap.hasPlayers()) {
+                gameMap.setPlayers(person, computer);
+            }
         } else {
             gameMap = new MainMap(n, m, person, computer);
         }
@@ -183,13 +197,13 @@ public class MainGame extends Game {
                     startBattle(person, computer, new int[]{selectedHero.getY(), selectedHero.getX()}, enemyCords);
                     break;
                 }
-                GameMenu.wrongChoose();
+                GameMenu.wrongChoice();
             case 4:
                 if (canInvade) {
                     startInvasion(selectedHero);
                     break;
                 }
-                GameMenu.wrongChoose();
+                GameMenu.wrongChoice();
                 break;
             case 0:
                 selectedHero = null;
@@ -203,7 +217,8 @@ public class MainGame extends Game {
                 personTurn();
                 break;
             default:
-                GameMenu.wrongChoose();
+                GameMenu.wrongChoice();
+                personTurn();
                 break;
         }
     }
@@ -247,7 +262,7 @@ public class MainGame extends Game {
         if (selected >= 0 && selected < heroes.size()) {
             return heroes.get(selected);
         } else {
-            GameMenu.wrongChoose();
+            GameMenu.wrongChoice();
             return null;
         }
     }

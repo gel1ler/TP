@@ -8,6 +8,8 @@ import game.Player.Entities.HeroType;
 import game.Player.Entities.Unit;
 import game.Player.Entities.UnitType;
 import game.Player.Player;
+import game.Utils.Logs.GameLogger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,10 +26,17 @@ public class BuildingsTest {
 
     @Before
     public void setUp() {
+        GameLogger.info("Battle test started");
+
         player = new Player(185, OwnerType.PERSON);
         testHero = new Hero(HeroType.KNIGHT, OwnerType.PERSON);
 
         outputStream = new ByteArrayOutputStream();
+    }
+
+    @After
+    public void end(){
+        GameLogger.info("Buildings test ended");
     }
 
     @Test

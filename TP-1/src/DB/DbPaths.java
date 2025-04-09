@@ -19,6 +19,7 @@ public enum DbPaths {
     }
 
     public String getUserPath() {
-        return path + getUserName() + "/";
+        String name = getUserName() != null ? getUserName() : "test";
+        return path + name + "/";
     }
 }

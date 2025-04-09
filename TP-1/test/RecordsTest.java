@@ -1,3 +1,5 @@
+import game.Utils.Logs.GameLogger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,12 +18,20 @@ public class RecordsTest {
 
     @Before
     public void setUp(){
-        stats.put("kills", (long) 10);
-        stats.put("steps", (long) 10);
-        stats.put("time", (long) 100);
+        GameLogger.info("Records test ended");
+
+        stats.put("kills", (long) 1000);
+        stats.put("steps", (long) 1);
+        stats.put("time", (long) 10);
 
         outputStream = new ByteArrayOutputStream();
     }
+
+    @After
+    public void end(){
+        GameLogger.info("Records test ended");
+    }
+
     @Test
     public void insertRecordsTest() throws IOException {
         TestUtils.setOutputStream(outputStream);

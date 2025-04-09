@@ -112,21 +112,17 @@ public class Game implements Serializable {
                         isDiagonal = true;
                         break;
                     default:
-                        Menu.wrongChoose();
+                        Menu.wrongChoice();
                 }
             }
 
             if (map.isCellAvailable(newY, newX, true)) {
-                //check
-                GameMenu.println("Шаг сделан");
                 double cost = map.getPenalty(newY, newX, entity.getOwner());
                 cost *= isDiagonal ? Math.sqrt(2) : 1;
                 if (tempMP >= cost) {
                     tempMP -= (int) cost;
                     setEntityPos(entity, map, new int[]{newY, newX});
                     if (!auto) {
-                        //check
-                        GameMenu.println("Сработал инкремент");
                         incrementStats("steps");
                         map.render();
                     }

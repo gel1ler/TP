@@ -4,12 +4,19 @@ import game.Utils.Menu.GameMenu;
 import game.Utils.Menu.Menu;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Objects;
 
 import static DB.DBUtils.createDirectory;
 
 public class Users {
-    public static void register(String name) throws IOException {
+    private static final String[] keyWords = {"test"};
+
+    public static boolean register(String name) throws IOException {
+        if (Arrays.asList(keyWords).contains(name)) {
+            Menu.errorMessage("Вы не можете зарегистрироваться под именем " + name + ". Оно явялется системным.");
+            return false;
+        }
         boolean isRegistered = checkIsRegistered(name);
 
         if (isRegistered) Menu.println("Вы вошли под именем " + name);
@@ -22,6 +29,7 @@ public class Users {
 
             Menu.println("Вы зарегистрировались под именем " + name);
         }
+        return true;
     }
 
     private static boolean checkIsRegistered(String name) throws IOException {

@@ -9,7 +9,6 @@ import game.Player.Player;
 import game.Utils.InputHandler;
 import game.Utils.Menu.GameMenu;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class Battle extends Game {
         if (selected >= 0 && selected < units.size()) {
             return units.get(selected);
         } else {
-            GameMenu.wrongChoose();
+            GameMenu.wrongChoice();
             return null;
         }
     }
@@ -106,20 +105,20 @@ public class Battle extends Game {
                     attack(selectedUnit, computerUnit);
                     break;
                 }
-                GameMenu.wrongChoose();
+                GameMenu.wrongChoice();
             case 4:
                 if (selectedUnit.haveSuperAbility() && canAtack) {
                     Unit computerUnit = computerHero.getUnit(enemyCords);
                     useSuperAbility(selectedUnit, computerUnit);
                     break;
                 } else {
-                    GameMenu.wrongChoose();
+                    GameMenu.wrongChoice();
                 }
             case 0:
                 selectedUnit = null;
                 personTurn();
             default:
-                GameMenu.wrongChoose();
+                GameMenu.wrongChoice();
                 break;
         }
     }
@@ -201,7 +200,7 @@ public class Battle extends Game {
         }
     }
 
-    public void attack(Unit murderer, Unit victim) {
+    private void attack(Unit murderer, Unit victim) {
         murderer.attack(victim);
         boolean isAlive = victim.getIsAlive();
 

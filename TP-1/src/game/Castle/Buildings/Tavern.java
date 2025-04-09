@@ -41,7 +41,7 @@ public class Tavern extends Building {
         }
     }
 
-    public void addHeroToOwner(Hero item){
+    public void addHeroToOwner(Hero item) {
         if (owner.canAfford(item)) {
             shop.buyItem(item);
             owner.addHero(new Hero((item).getHeroType(), owner.getOwnerType()));
@@ -53,6 +53,19 @@ public class Tavern extends Building {
     @Override
     public void interact() {
         BuildingMenu.println("Вы вошли в Таверну.");
-        buyHero();
+
+        BuildingMenu.println("1 - Купить героя\t\t2 - Поиграть в шашки\t\t0 - Выход");
+        int selected = InputHandler.getIntInput();
+
+        while (selected != 0) {
+            switch (selected) {
+                case 1:
+                    buyHero();
+                case 2:
+                    BuildingMenu.println("Start SHASHKI");
+            }
+            BuildingMenu.println("1 - Купить героя\t\t2 - Поиграть в шашки\t\t0 - Выход");
+            selected = InputHandler.getIntInput();
+        }
     }
 }

@@ -44,6 +44,12 @@ public class GameMenu extends Menu {
         }
     }
 
+    public static void chooseMapSave(){
+        println("Выберите карту:");
+        println("0 - База, основа так сказать");
+        println("1 - Карты сообщества");
+    }
+
     public static void showAvailiableMoves(int mp) {
         println(mp + " - очков передвижения");
         println("Выберите направление:");
