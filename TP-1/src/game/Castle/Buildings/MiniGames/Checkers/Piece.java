@@ -2,6 +2,7 @@ package game.Castle.Buildings.MiniGames.Checkers;
 
 public class Piece {
     private PieceType type;
+    private int x, y;
     private boolean isKing;
 
     public Piece(PieceType type, int y, int x) {
